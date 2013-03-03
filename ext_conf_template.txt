@@ -1,0 +1,2 @@
+# cat=basic; type=user[tx_Dyncss_ExtMgm_Statefield->main]; label= Current state of installed DynCss extensions
+state =
