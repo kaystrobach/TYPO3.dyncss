@@ -35,3 +35,7 @@ if(TYPO3_MODE === 'BE') {
 } elseif(TYPO3_MODE === 'FE') {
 	$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:dyncss/Classes/Hooks/TslibFeContentPostProcAllHook.php:tx_Dyncss_TslibFeContentPostProcAllHook->main';
 }
+
+
+// @todo ClearCacheActionsHookInterface
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'tx_dyncss_Hooks_T3libTcemainHook->clearCachePostProc';
