@@ -33,6 +33,5 @@ if (!defined('TYPO3_MODE')) {
 if(TYPO3_MODE === 'BE') {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][] = 'tx_Dyncss_Hooks_T3libPageRendererRenderPreProcessHook->execute';
 } elseif(TYPO3_MODE === 'FE') {
-	echo 'data';
 	$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:dyncss/Classes/Hooks/TslibFeContentPostProcAllHook.php:tx_Dyncss_TslibFeContentPostProcAllHook->main';
 }

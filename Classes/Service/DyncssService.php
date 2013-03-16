@@ -9,6 +9,8 @@ class tx_Dyncss_Service_DyncssService {
 		$currentFile = self::fixPathForInput($inputFile);
 		$pathInfo    = pathinfo($currentFile);
 
+		#echo $inputFile . "\n";
+
 		$parser = tx_DynCss_Configuration_BeRegistry::get()->getFileHandler($pathInfo['extension']);
 		if($parser !== null) {
 			$parser->setOverrides(self::getOverrides());

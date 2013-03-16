@@ -9,6 +9,8 @@ class tx_Dyncss_TslibFeContentPostProcAllHook extends tx_Dyncss_Hooks_T3libPageR
 		$xPath = new DOMXpath($xml);
 		$linkElements = $xPath->query("//link[@rel='stylesheet']");
 
+		#echo "tx_Dyncss_TslibFeContentPostProcAllHook - elements found " . $linkElements->length . "\n";
+
 		if($linkElements->length > 0)  {
 			for($i = 0; $i < $linkElements->length; $i++) {
 				$cssFile = $linkElements->item($i)->attributes->getNamedItem('href')->nodeValue;

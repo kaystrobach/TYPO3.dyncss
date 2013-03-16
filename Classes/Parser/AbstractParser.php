@@ -14,6 +14,11 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 
 	protected $fileEnding = '';
 
+	protected $config = array();
+
+	protected function initEmConfiguration() {
+		$this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dyncss']);
+	}
 	/**
 	 * @param $inputFilename
 	 * @param $outputFilename
