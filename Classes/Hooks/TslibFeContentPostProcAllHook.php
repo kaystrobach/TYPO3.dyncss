@@ -20,11 +20,13 @@ class tx_Dyncss_TslibFeContentPostProcAllHook extends tx_Dyncss_Hooks_T3libPageR
 				}
 				$compiledFile = tx_Dyncss_Service_DyncssService::getCompiledFile($cssFile);
 				if($compiledFile !== $cssFile) {
-					$linkElements->item($i)->attributes->getNamedItem('href')->nodeValue = $compiledFile . '?' . filemtime($compiledFile);
+					#$linkElements->item($i)->attributes->getNamedItem('href')->nodeValue = $compiledFile . '?' . filemtime($compiledFile);
+					$param['pObj']->content = str_replace($cssFile, $compiledFile, $param['pObj']->content);
 				}
 			}
 		}
-		$param['pObj']->content = $xml->saveHTML();
+		#$param['pObj']->content = $xml->saveHTML();
+		// @todo remove refactored comments ...
 	}
 }
 
