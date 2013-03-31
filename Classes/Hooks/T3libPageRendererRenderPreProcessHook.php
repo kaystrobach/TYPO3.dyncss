@@ -36,9 +36,9 @@ class tx_Dyncss_Hooks_T3libPageRendererRenderPreProcessHook  {
 	 * @param t3lib_PageRenderer $pagerenderer
 	 */
 	public function execute(&$params, &$pagerenderer) {
-		/**
-		 * iterate $params['cssFiles']
-		 */
+		if(!is_array($params['cssFiles'])) {
+			return ;
+		}
 		$cssFilesArray = array();
 		foreach($params['cssFiles'] as $cssFile => $cssFileSettings) {
 			$compiledFile = tx_Dyncss_Service_DyncssService::getCompiledFile($cssFile);
@@ -50,6 +50,8 @@ class tx_Dyncss_Hooks_T3libPageRendererRenderPreProcessHook  {
 				$cssFilesArray[$cssFile]      = $cssFileSettings;
 			}
 		}
+
 		$params['cssFiles'] = $cssFilesArray;
+
 	}
 }
