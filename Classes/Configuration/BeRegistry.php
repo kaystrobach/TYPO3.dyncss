@@ -60,7 +60,7 @@ class tx_DynCss_Configuration_BeRegistry implements t3lib_Singleton {
 			//@todo use factory here
 			return t3lib_div::makeInstance($this->fileHandler[$extension]);
 		} else {
-			return null;
+			return NULL;
 		}
 	}
 
