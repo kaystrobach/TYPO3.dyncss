@@ -49,15 +49,25 @@ class tx_Dyncss_Service_DyncssServiceTest extends Tx_Extbase_Tests_Unit_BaseTest
 	}
 
 	/**
+	 * @test
+	 */
+	public function getCompiledFileCss() {
+		$this->assertEquals(
+			'test.css',
+			tx_Dyncss_Service_DyncssService::getCompiledFile('test.css'),
+			'check wether css files are untouched'
+		);
+	}
+
+	/**
 	 * need to register a dummy parser (mock) and check wether several functions are called
 	 *
 	 * @test
 	 */
-	public function getCompiledFile() {
+	public function getCompiledFileParsed() {
 		$this->markTestSkipped(
 			'not yet implemented'
 		);
 	}
-
 
 }

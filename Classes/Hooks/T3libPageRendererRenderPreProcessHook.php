@@ -50,8 +50,6 @@ class tx_Dyncss_Hooks_T3libPageRendererRenderPreProcessHook  {
 				$cssFilesArray[$cssFile]      = $cssFileSettings;
 			}
 		}
-
 		$params['cssFiles'] = $cssFilesArray;
-
 	}
 }

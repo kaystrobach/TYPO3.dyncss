@@ -8,9 +8,6 @@ class tx_Dyncss_Service_DyncssService {
 	static function getCompiledFile($inputFile) {
 		$currentFile = self::fixPathForInput($inputFile);
 		$pathInfo    = pathinfo($currentFile);
-
-		#echo $inputFile . "\n";
-
 		$parser = tx_DynCss_Configuration_BeRegistry::get()->getFileHandler($pathInfo['extension']);
 		if($parser !== null) {
 			$parser->setOverrides(self::getOverrides());
@@ -31,7 +28,7 @@ class tx_Dyncss_Service_DyncssService {
 		if(TYPO3_MODE === 'FE') {
 			$file = t3lib_div::getFileAbsFileName($file);
 		} elseif(TYPO3_MODE === 'BE') {
-			$file = PATH_typo3 . $file;
+			$file = t3lib_div::resolveBackPath(PATH_typo3 . $file);
 		}
 		return $file;
 	}
@@ -46,6 +43,9 @@ class tx_Dyncss_Service_DyncssService {
 			$file = str_replace(PATH_site, '', $file);
 		} elseif(TYPO3_MODE === 'BE') {
 			$file = str_replace(PATH_site, '../', $file);
+			if(array_key_exists('BACK_PATH', $GLOBALS)){
+				$file = $GLOBALS['BACK_PATH'] . $file;
+			}
 		}
 		return $file;
 	}
