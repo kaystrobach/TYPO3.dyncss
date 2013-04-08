@@ -8,7 +8,7 @@ Frontend
 
 Example TYPOScript:
 
-	page.includeCSS.testLess = EXT:less/Resources/Private/Less/Example.less
+	page.includeCSS.testLess = EXT:dyncss_test/Resources/Public/Stylesheets/Example.less
 
 Example Overrides (dynamic color settings, dynamic image overrides):
 
