@@ -121,7 +121,7 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 		$this->cacheFilename  = $cacheFilename;
 
 		//write intermediate file, if the source has been changed, the rest is done by the cache management
-		if(filemtime($preparedFilename) < filemtime($inputFilename) || $this->_checkIfCompileNeeded($inputFilename)) {
+		if(@filemtime($preparedFilename) < @filemtime($inputFilename) || $this->_checkIfCompileNeeded($inputFilename)) {
 			file_put_contents($preparedFilename, $this->_prepareCompile(file_get_contents($inputFilename)));
 
 			$fileContent = $this->_postCompile($this->_compileFile($inputFilename, $preparedFilename, $outputFilename, $cacheFilename));
