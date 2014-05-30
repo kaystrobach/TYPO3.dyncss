@@ -25,7 +25,7 @@ plugin.tx_dyncss {
 				1.current = 1
 			}
 		}
-		inputColor2 .< inputColor1
+		inputColor2 < .inputColor1
 		inputColor2.cObject.split.1 >
 		inputColor2.cObject.split.2.current = 1
 	}
