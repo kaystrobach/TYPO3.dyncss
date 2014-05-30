@@ -26,6 +26,7 @@ plugin.tx_dyncss {
 			}
 		}
 		inputColor2 .< inputColor1
+		inputColor2.cObject.split.1 >
 		inputColor2.cObject.split.2.current = 1
 	}
 	overrides {
