@@ -21,13 +21,11 @@ plugin.tx_dyncss {
 			value = {$lessColorScheme}
 			split {
 				token.char = 124
-				cObjNum = 1|*|2
-				1.current = 1
+				returnKey = 0
 			}
 		}
 		inputColor2 < .inputColor1
-		inputColor2.cObject.split.1 >
-		inputColor2.cObject.split.2.current = 1
+		inputColor2.cObject.split.returnKey = 1
 	}
 	overrides {
 		inputColor1 = TEXT
