@@ -48,7 +48,7 @@ plugin.tx_dyncss {
 				20.file = GIFBUILDER
 				20.file {
 					XY = 128,22
-					backColor.stdWrap.cObject =< plugin.tx_dyncss.register.inputColor1
+					backColor.data = register:inputColor1
 				}
 				20.mask = EXT:example/css/colors/less/images/logo_sw.png
 			}
