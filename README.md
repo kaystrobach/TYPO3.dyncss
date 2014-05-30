@@ -13,7 +13,6 @@ Example TYPOScript:
 Example Overrides (dynamic color settings, dynamic image overrides):
 
 ```typoscript
-
 plugin.tx_dyncss {
 	register = LOAD_REGISTER
 	register {
