@@ -30,27 +30,28 @@ plugin.tx_dyncss {
 		inputColor2.cObject.split.2.current = 1
 	}
 	overrides {
-	inputColor1 = TEXT
-	inputColor1 {
-		data = register:inputColor1
-	}
-	inputColor2 = TEXT
-	inputColor2 {
-		data = register:inputColor2
-	}
-	logo = IMG_RESOURCE
-	logo {
-		stdWrap.wrap = url("|")
-		file = GIFBUILDER
-		file {
-			XY = [20.w],[20.h]
-			20 = IMAGE
-			20.file = GIFBUILDER
-			20.file {
-				XY = 128,22
-				backColor.stdWrap.cObject =< plugin.tx_dyncss.register.inputColor1
+		inputColor1 = TEXT
+		inputColor1 {
+			data = register:inputColor1
+		}
+		inputColor2 = TEXT
+		inputColor2 {
+			data = register:inputColor2
+		}
+		logo = IMG_RESOURCE
+		logo {
+			stdWrap.wrap = url("|")
+			file = GIFBUILDER
+			file {
+				XY = [20.w],[20.h]
+				20 = IMAGE
+				20.file = GIFBUILDER
+				20.file {
+					XY = 128,22
+					backColor.stdWrap.cObject =< plugin.tx_dyncss.register.inputColor1
+				}
+				20.mask = EXT:example/css/colors/less/images/logo_sw.png
 			}
-			20.mask = EXT:example/css/colors/less/images/logo_sw.png
 		}
 	}
 }
