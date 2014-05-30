@@ -13,40 +13,33 @@ Example TYPOScript:
 Example Overrides (dynamic color settings, dynamic image overrides):
 
 ```typoscript
+
 plugin.tx_dyncss {
-	overrides {
-		register = LOAD_REGISTER
-		register {
-			inputColor1.cObject = TEXT
-			inputColor1.cObject {
-				value = {$lessColorScheme}
-				split {
-					token.char = 124
-					cObjNum = 1|*|2
-					1.current = 1
-				}
+	register = LOAD_REGISTER
+	register {
+		inputColor1.cObject = TEXT
+		inputColor1.cObject {
+			value = {$lessColorScheme}
+			split {
+				token.char = 124
+				cObjNum = 1|*|2
+				1.current = 1
 			}
 		}
+		inputColor2 .< inputColor1
+		inputColor2.cObject.split.2.current = 1
+	}
+	overrides {
 	inputColor1 = TEXT
 	inputColor1 {
-		value = {$lessColorScheme}
-		split {
-			token.char = 124
-			cObjNum = 1|*|2
-			1.current = 1
-		}
+		data = register:inputColor1
 	}
 	inputColor2 = TEXT
 	inputColor2 {
-		value = {$lessColorScheme}
-		split {
-			token.char = 124
-			cObjNum = 1|*|2
-			2.current = 1
-		}
+		data = register:inputColor2
 	}
-	rahmenBoxLogo = IMG_RESOURCE
-	rahmenBoxLogo {
+	logo = IMG_RESOURCE
+	logo {
 		stdWrap.wrap = url("|")
 		file = GIFBUILDER
 		file {
@@ -55,7 +48,7 @@ plugin.tx_dyncss {
 			20.file = GIFBUILDER
 			20.file {
 				XY = 128,22
-				backColor.stdWrap.cObject =< plugin.tx_dyncss.overrides.inputColor1
+				backColor.stdWrap.cObject =< plugin.tx_dyncss.register.inputColor1
 			}
 			20.mask = EXT:example/css/colors/less/images/logo_sw.png
 		}
@@ -67,6 +60,7 @@ Example less file:
 
 ```less
 	@linkColor: blue;
+	@logo: url(someWeirdUrl);
 
 	a {
 		color: @linkColor;
@@ -76,6 +70,9 @@ Example less file:
 		a {
 			color: lighten(@linkColor, 20%);
 		}
+	}
+	#logo {
+		background-image:@logo
 	}
 ```
 
