@@ -52,6 +52,7 @@ plugin.tx_dyncss {
 			}
 		}
 	}
+	registerReset = RESTORE_REGISTER
 }
 ```
 
