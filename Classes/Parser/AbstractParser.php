@@ -56,34 +56,59 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @param $string
 	 * @return mixed
 	 */
-	protected function _postCompile($string) {
+	public function _postCompile($string) {
 		$relativePath = dirname(substr($this->inputFilename, strlen(PATH_site))) . '/';
 
-		preg_match_all('|url\\([\'"]?([^\'"]*)["\']?\\);|Ui', $string, $matches);
-
+		preg_match_all('|url[\s]*\([\s]*(?<url>[^\)]*)[\s]*\)[\s]*|Ui', $string, $matches, PREG_SET_ORDER);
 
 		if(is_array($matches) && count($matches)) {
-			foreach($matches[1] as $key=>$value) {
-				if(is_file(dirname($this->inputFilename) . '/' . $value)) {
-					$newPath = '../../../../' . $relativePath . $value;
-				} elseif(is_file(PATH_site . $value)) {
-					$newPath = '../../../../' . $value;
-				} else {
-					// can't replace, because i haven't found the correct path - mystic or not?
-					// just do nothing to handle /, http(s), ...
-					$newPath = $value;
-				}
-				$matches[0][$key] = str_replace($matches[1][$key], $newPath, $matches[0][$key]);
-				$string           = str_replace($matches[1][$key], $newPath, $string);
+			foreach($matches as $key=>$value) {
+				$url     = trim($value['url'], '\'"');
+				$newPath = $this->resolveUrlInCss($url);
+				$string  = str_replace($url, $newPath, $string);
 			}
 		}
 		return $string;
 	}
 
 	/**
+	 * fixes URLs for use in CSS files
+	 *
+	 * @param $url
+	 * @return string
+	 */
+	public function resolveUrlInCss($url) {
+		if(strpos($url, '://') !== FALSE) {
+			// http://, ftp:// etc. urls leave untouched
+			return $url;
+		} elseif(substr($url, 0, 1) === '/') {
+			// absolute path, should not be touched
+			return $url;
+		} else {
+			// anything inside TYPO3 has to be adjusted
+			return '../../../../' . dirname($this->removePrefixFromString(PATH_site, $this->inputFilename)) . '/' . $url;
+		}
+	}
+
+	/**
+	 * removes a prefix from a string
+	 *
+	 * @param $prefix
+	 * @param $string
+	 * @return string
+	 */
+	public function removePrefixFromString($prefix, $string) {
+		if (t3lib_div::isFirstPartOfStr($string, $prefix)) {
+			return substr($string, strlen($prefix));
+		} else {
+			return $string;
+		}
+	}
+
+	/**
 	 * @param $overrides
 	 */
-	function setOverrides($overrides) {
+	public function setOverrides($overrides) {
 		$this->overrides = t3lib_div::array_merge_recursive_overrule($this->overrides, $overrides);
 	}
 
@@ -92,8 +117,8 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @param null $name
 	 * @return mixed
 	 */
-	function compile($string, $name = null) {
-		$string = $this->prepareCompile($string);
+	public function compile($string, $name = null) {
+		$string = $this->_prepareCompile($string);
 		return $this->_compile($string, $name);
 	}
 
@@ -102,7 +127,7 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @param null $outputFilename
 	 * @return string
 	 */
-	function compileFile($inputFilename, $outputFilename = null) {
+	public function compileFile($inputFilename, $outputFilename = null) {
 
 		if(!$this->prepareEnvironment($inputFilename)) {
 			return $inputFilename;
@@ -143,7 +168,7 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @return bool
 	 * @throws Exception
 	 */
-	protected function prepareEnvironment($fname) {
+	public function prepareEnvironment($fname) {
 		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', 'Cache/Data/DynCss/');
 		if(!is_dir(PATH_site . 'typo3temp/Cache/Data/DynCss/')) {
 			throw new Exception('Can´t create cache directory PATH_site/typo3temp/Cache/Data/DynCss/');
