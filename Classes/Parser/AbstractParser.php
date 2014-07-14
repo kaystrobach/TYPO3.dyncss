@@ -10,7 +10,7 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 */
 	protected $cssParserObject = null;
 
-	protected $cachePath  = 'typo3temp/Cache/Data/DynCss/';
+	protected $cachePath  = 'typo3temp/DynCss/';
 
 	protected $fileEnding = '';
 
@@ -170,9 +170,9 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @throws Exception
 	 */
 	public function prepareEnvironment($fname) {
-		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', 'Cache/Data/DynCss/');
-		if(!is_dir(PATH_site . 'typo3temp/Cache/Data/DynCss/')) {
-			throw new Exception('Can´t create cache directory PATH_site/typo3temp/Cache/Data/DynCss/');
+		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', 'DynCss/');
+		if(!is_dir(PATH_site . $this->cachePath)) {
+			throw new Exception('Can´t create cache directory PATH_site/' . $this->cachePath);
 		}
 		if(!is_file($fname)) {
 			return false;
