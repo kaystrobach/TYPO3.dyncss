@@ -153,6 +153,7 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 
 			if($fileContent !== false) {
 				file_put_contents($outputFilename, $fileContent);
+				unlink($preparedFilename);
 			}
 		}
 
