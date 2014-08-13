@@ -1,6 +1,13 @@
 <?php
 
+/**
+ * @todo missing docblock
+ */
 class tx_Dyncss_TslibFeContentPostProcAllHook extends tx_Dyncss_Hooks_T3libPageRendererRenderPreProcessHook {
+
+	/**
+	 * @todo add typehinting
+	 */
 	function main(&$param, &$obj) {
 		$xml = new DOMDocument('1.0', 'utf-8');
 		$xml->substituteEntities = FALSE;
