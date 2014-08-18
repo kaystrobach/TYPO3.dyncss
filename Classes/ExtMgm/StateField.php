@@ -1,6 +1,13 @@
 <?php
 
+/**
+ * @todo missing docblock
+ */
 class tx_Dyncss_ExtMgm_Statefield {
+
+	/**
+	 * @todo missing docblock
+	 */
 	function main() {
 		$buffer = '';
 		$registry = t3lib_div::makeInstance('tx_DynCss_Configuration_BeRegistry');

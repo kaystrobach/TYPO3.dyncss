@@ -1,29 +1,49 @@
 <?php
 
+/**
+ * @todo fix type hinting in @param comments
+ */
 abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_ParserInterface{
+
 	/**
 	 * @var array
 	 */
 	protected $overrides = array();
+
 	/**
 	 * @var null|object
 	 */
 	protected $cssParserObject = null;
 
-	protected $cachePath  = 'typo3temp/DynCss/';
+	/**
+	 * @var string
+	 */
+	protected $cachePath = 'typo3temp/DynCss/';
 
+	/**
+	 * @var string
+	 */
 	protected $fileEnding = '';
 
+	/**
+	 * @var array $config
+	 */
 	protected $config = array();
 
+	/**
+	 * @todo add docblock
+	 */
 	protected function initEmConfiguration() {
 		$this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dyncss']);
 	}
+
 	/**
 	 * @param $inputFilename
 	 * @param $outputFilename
 	 * @param $cacheFilename
 	 * @return mixed
+	 *
+	 * @todo add typehinting
 	 */
 	abstract protected function _compileFile($inputFilename, $preparedFilename, $outputFilename, $cacheFilename);
 
@@ -31,12 +51,16 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @param $string
 	 * @param null $name
 	 * @return mixed
+	 *
+	 * @todo add typehinting
 	 */
 	abstract protected function _compile($string, $name = null);
 
 	/**
 	 * @param $string
 	 * @return mixed
+	 *
+	 * @todo add typehinting
 	 */
 	abstract protected function _prepareCompile($string);
 
@@ -45,6 +69,8 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 *
 	 * @param $inputFilename
 	 * @return bool
+	 *
+	 * @todo add typehinting
 	 */
 	protected function _checkIfCompileNeeded($inputFilename) {
 		return false;
@@ -55,17 +81,26 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 *
 	 * @param $string
 	 * @return mixed
+	 *
+	 * @todo add typehinting
 	 */
 	public function _postCompile($string) {
+		/**
+		 * $relativePath seems to be unused?
+		 * @todo missing declaration of inputFilename
+		 */
 		$relativePath = dirname(substr($this->inputFilename, strlen(PATH_site))) . '/';
 
+		/**
+		 * @todo missing declaration of $matches
+		 */
 		preg_match_all('|url[\s]*\([\s]*(?<url>[^\)]*)[\s]*\)[\s]*|Ui', $string, $matches, PREG_SET_ORDER);
 
 		if(is_array($matches) && count($matches)) {
-			foreach($matches as $key=>$value) {
-				$url     = trim($value['url'], '\'"');
+			foreach($matches as $key => $value) {
+				$url = trim($value['url'], '\'"');
 				$newPath = $this->resolveUrlInCss($url);
-				$string  = str_replace($url, $newPath, $string);
+				$string = str_replace($url, $newPath, $string);
 			}
 		}
 		return $string;
@@ -76,6 +111,8 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 *
 	 * @param $url
 	 * @return string
+	 *
+	 * @todo add typehinting
 	 */
 	public function resolveUrlInCss($url) {
 		if(strpos($url, '://') !== FALSE) {
@@ -96,6 +133,8 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @param $prefix
 	 * @param $string
 	 * @return string
+	 *
+	 * @todo add typehinting
 	 */
 	public function removePrefixFromString($prefix, $string) {
 		if (t3lib_div::isFirstPartOfStr($string, $prefix)) {
@@ -107,6 +146,8 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 
 	/**
 	 * @param $overrides
+	 *
+	 * @todo add typehinting
 	 */
 	public function setOverrides($overrides) {
 		$this->overrides = t3lib_div::array_merge_recursive_overrule($this->overrides, $overrides);
@@ -116,6 +157,8 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @param $string
 	 * @param null $name
 	 * @return mixed
+	 *
+	 * @todo add typehinting
 	 */
 	public function compile($string, $name = null) {
 		$string = $this->_prepareCompile($string);
@@ -126,6 +169,8 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @param $inputFilename
 	 * @param null $outputFilename
 	 * @return string
+	 *
+	 * @todo add typehinting
 	 */
 	public function compileFile($inputFilename, $outputFilename = null) {
 
@@ -136,14 +181,14 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 			$outputFilename = PATH_site . $this->cachePath . basename($inputFilename);
 		}
 		$outputFilenamePathInfo = pathinfo($outputFilename);
-		$noExtensionFilename    = $outputFilename . '-' . hash('crc32b', $inputFilename) . '-' . hash('crc32b', serialize($this->overrides)) . '-' . hash('crc32b', filemtime($inputFilename));
-		$preparedFilename       = $noExtensionFilename . '.' . $outputFilenamePathInfo['extension'];
-		$cacheFilename          = $noExtensionFilename . '.cache';
-		$outputFilename         = $noExtensionFilename . '.css';
+		$noExtensionFilename = $outputFilename . '-' . hash('crc32b', $inputFilename) . '-' . hash('crc32b', serialize($this->overrides)) . '-' . hash('crc32b', filemtime($inputFilename));
+		$preparedFilename = $noExtensionFilename . '.' . $outputFilenamePathInfo['extension'];
+		$cacheFilename = $noExtensionFilename . '.cache';
+		$outputFilename = $noExtensionFilename . '.css';
 
-		$this->inputFilename  = $inputFilename;
+		$this->inputFilename = $inputFilename;
 		$this->outputFilename = $outputFilename;
-		$this->cacheFilename  = $cacheFilename;
+		$this->cacheFilename = $cacheFilename;
 
 		//write intermediate file, if the source has been changed, the rest is done by the cache management
 		if(@filemtime($preparedFilename) < @filemtime($inputFilename) || $this->_checkIfCompileNeeded($inputFilename)) {
@@ -157,9 +202,7 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 			}
 		}
 
-
 		return $outputFilename;
-
 	}
 
 	/**
@@ -179,5 +222,4 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 		}
 		return true;
 	}
-
 }

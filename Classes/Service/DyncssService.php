@@ -1,13 +1,19 @@
 <?php
 
+/**
+ * @todo missing docblock
+ */
 class tx_Dyncss_Service_DyncssService {
+
 	/**
 	 * @param $inputFile notCompiled Dynamic Css file
 	 * @return string path to the compiled file, or to the input file, if not modified
+	 *
+	 * @todo add typehinting
 	 */
 	static function getCompiledFile($inputFile) {
 		$currentFile = self::fixPathForInput($inputFile);
-		$pathInfo    = pathinfo($currentFile);
+		$pathInfo = pathinfo($currentFile);
 		$parser = tx_DynCss_Configuration_BeRegistry::get()->getFileHandler($pathInfo['extension']);
 		if($parser !== null) {
 			$parser->setOverrides(self::getOverrides());
@@ -23,6 +29,8 @@ class tx_Dyncss_Service_DyncssService {
 	 *
 	 * @param $file
 	 * @return string
+	 *
+	 * @todo add typehinting
 	 */
 	protected static function fixPathForInput($file) {
 		if(TYPO3_MODE === 'FE') {
@@ -32,11 +40,13 @@ class tx_Dyncss_Service_DyncssService {
 		}
 		return $file;
 	}
+
 	/**
 	 * Fixes the path for fe or be usage
 	 *
 	 * @param $file
 	 * @return mixed
+	 * @todo add typehinting
 	 */
 	protected static function fixPathForOutput($file) {
 		if(TYPO3_MODE === 'FE') {
@@ -57,8 +67,8 @@ class tx_Dyncss_Service_DyncssService {
 	static function getOverrides() {
 		$overrides = array();
 		if(TYPO3_MODE === 'FE') {
-			if((array_key_exists('plugin.',    $GLOBALS['TSFE']->tmpl->setup))
-			&& (array_key_exists('tx_dyncss.',   $GLOBALS['TSFE']->tmpl->setup['plugin.']))
+			if((array_key_exists('plugin.', $GLOBALS['TSFE']->tmpl->setup))
+			&& (array_key_exists('tx_dyncss.', $GLOBALS['TSFE']->tmpl->setup['plugin.']))
 			&& (array_key_exists('overrides.', $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']))) {
 				// iterate of cObjects and render them to pass them into the vars
 				foreach($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']['overrides.'] as $varName => $varCObj) {
@@ -75,5 +85,4 @@ class tx_Dyncss_Service_DyncssService {
 		}
 		return $overrides;
 	}
-
 }
