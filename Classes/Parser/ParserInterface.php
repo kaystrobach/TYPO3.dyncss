@@ -1,9 +1,11 @@
 <?php
 
+namespace KayStrobach\Dyncss\Parser;
+
 /**
  * @todo missing docblock
  */
-interface tx_Dyncss_Parser_ParserInterface {
+interface ParserInterface {
 
 	/**
 	* @todo missing docblock

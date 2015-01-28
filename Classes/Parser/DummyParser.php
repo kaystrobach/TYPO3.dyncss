@@ -1,9 +1,11 @@
 <?php
 
+namespace KayStrobach\Dyncss\Parser;
+
 /**
  * @todo add docblock
  */
-class tx_Dyncss_Parser_DummyParser extends tx_Dyncss_Parser_AbstractParser{
+class DummyParser extends \KayStrobach\Dyncss\Parser\AbstractParser {
 
 	/**
 	 * @param $inputFilename

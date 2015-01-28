@@ -1,9 +1,12 @@
 <?php
 
+namespace KayStrobach\Dyncss\Hooks;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @todo missing docblock
  */
-class tx_dyncss_Hooks_T3libTcemainHook {
+class T3libTcemainHook {
 
 	/**
 	 *
@@ -14,7 +17,7 @@ class tx_dyncss_Hooks_T3libTcemainHook {
 	 */
 	function clearCachePostProc($params, &$pObj) {
 		if(isset($params['cacheCmd']) && $params['cacheCmd'] = 'pages') {
-			t3lib_div::rmdir(
+			GeneralUtility::rmdir(
 				PATH_site . 'typo3temp/Cache/Data/DynCss',
 				TRUE
 			);

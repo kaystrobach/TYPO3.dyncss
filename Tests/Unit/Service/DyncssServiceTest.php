@@ -2,7 +2,7 @@
 
 class tx_Dyncss_Service_DyncssServiceTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	/**
-	 * @var tx_DynCss_Configuration_BeRegistry
+	 * @var \KayStrobach\Dyncss\Configuration\BeRegistry
 	 */
 	protected $fixture;
 
@@ -20,7 +20,7 @@ class tx_Dyncss_Service_DyncssServiceTest extends Tx_Extbase_Tests_Unit_BaseTest
 	public function getOverridesIsArray() {
 		$this->assertEquals(
 			'array',
-			gettype(tx_Dyncss_Service_DyncssService::getOverrides()),
+			gettype(\KayStrobach\Dyncss\Service\DyncssService::getOverrides()),
 			'dyncss is not returning an array as override collection'
 		);
 	}
@@ -30,11 +30,11 @@ class tx_Dyncss_Service_DyncssServiceTest extends Tx_Extbase_Tests_Unit_BaseTest
 	 */
 	public function getOverrideForBackend() {
 		$value = md5(time());
-		$beRegistry = t3lib_div::makeInstance('tx_Dyncss_Configuration_BeRegistry');
+		$beRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_Dyncss_Configuration_BeRegistry');
 		$beRegistry->setOverride('testValue', $value);
 		$this->assertContains(
 			$value,
-			tx_Dyncss_Service_DyncssService::getOverrides(),
+			\KayStrobach\Dyncss\Service\DyncssService::getOverrides(),
 			'backend set value is not added to array'
 		);
 	}
@@ -54,7 +54,7 @@ class tx_Dyncss_Service_DyncssServiceTest extends Tx_Extbase_Tests_Unit_BaseTest
 	public function getCompiledFileCss() {
 		$this->assertEquals(
 			'test.css',
-			tx_Dyncss_Service_DyncssService::getCompiledFile('test.css'),
+			\KayStrobach\Dyncss\Service\DyncssService::getCompiledFile('test.css'),
 			'check wether css files are untouched'
 		);
 	}

@@ -2,12 +2,12 @@
 
 class tx_Dyncss_ExtMgm_StatefieldTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	/**
-	 * @var tx_Dyncss_ExtMgm_Statefield
+	 * @var \KayStrobach\Dyncss\ExtMgm\Statefield
 	 */
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = new tx_Dyncss_ExtMgm_Statefield;
+		$this->fixture = new \KayStrobach\Dyncss\ExtMgm\Statefield();
 	}
 
 	public function tearDown() {

@@ -1,4 +1,7 @@
 <?php
+
+namespace KayStrobach\Dyncss\Hooks;
+
 /***************************************************************
 * Copyright notice
 *
@@ -27,13 +30,13 @@
  * @author Kay Strobach
  * @package Less
  */
-class tx_Dyncss_Hooks_T3libPageRendererRenderPreProcessHook {
+class T3libPageRendererRenderPreProcessHook {
 
 	/**
 	 * This function iterates over the arrays and rebuild them to keep the order, as keynames may change.
 	 *
 	 * @param array $params
-	 * @param t3lib_PageRenderer $pagerenderer
+	 * @param \TYPO3\CMS\Core\Page\PageRenderer $pagerenderer
 	 */
 	public function execute(&$params, &$pagerenderer) {
 		if(!is_array($params['cssFiles'])) {
@@ -41,7 +44,7 @@ class tx_Dyncss_Hooks_T3libPageRendererRenderPreProcessHook {
 		}
 		$cssFilesArray = array();
 		foreach($params['cssFiles'] as $cssFile => $cssFileSettings) {
-			$compiledFile = tx_Dyncss_Service_DyncssService::getCompiledFile($cssFile);
+			$compiledFile = \KayStrobach\Dyncss\Service\DyncssService::getCompiledFile($cssFile);
 			if($compiledFile !== $cssFile) {
 				$cssFileSettings['file'] = $compiledFile; //needed for TYPO3 4.6+ ;)
 				$cssFileSettings['compress'] = 0;

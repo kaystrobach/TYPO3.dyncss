@@ -1,9 +1,12 @@
 <?php
 
+namespace KayStrobach\Dyncss\Parser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @todo fix type hinting in @param comments
  */
-abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_ParserInterface{
+abstract class AbstractParser implements ParserInterface{
 
 	/**
 	 * @var array
@@ -137,7 +140,7 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @todo add typehinting
 	 */
 	public function removePrefixFromString($prefix, $string) {
-		if (t3lib_div::isFirstPartOfStr($string, $prefix)) {
+		if (GeneralUtility::isFirstPartOfStr($string, $prefix)) {
 			return substr($string, strlen($prefix));
 		} else {
 			return $string;
@@ -150,7 +153,7 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 * @todo add typehinting
 	 */
 	public function setOverrides($overrides) {
-		$this->overrides = t3lib_div::array_merge_recursive_overrule($this->overrides, $overrides);
+		$this->overrides = GeneralUtility::array_merge_recursive_overrule($this->overrides, $overrides);
 	}
 
 	/**
@@ -210,12 +213,12 @@ abstract class tx_Dyncss_Parser_AbstractParser implements tx_Dyncss_Parser_Parse
 	 *
 	 * @param $fname
 	 * @return bool
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function prepareEnvironment($fname) {
-		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', 'DynCss/');
+		GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', 'DynCss/');
 		if(!is_dir(PATH_site . $this->cachePath)) {
-			throw new Exception('Can´t create cache directory PATH_site/' . $this->cachePath);
+			throw new \Exception('Can´t create cache directory PATH_site/' . $this->cachePath);
 		}
 		if(!is_file($fname)) {
 			return false;

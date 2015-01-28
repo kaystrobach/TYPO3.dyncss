@@ -2,12 +2,12 @@
 
 class Tx_Dyncss_Configuration_BeRegistryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	/**
-	 * @var tx_DynCss_Configuration_BeRegistry
+	 * @var \KayStrobach\Dyncss\Configuration\BeRegistry
 	 */
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = new tx_DynCss_Configuration_BeRegistry;
+		$this->fixture = new \KayStrobach\Dyncss\Configuration\BeRegistry;
 	}
 
 	public function tearDown() {
@@ -29,10 +29,10 @@ class Tx_Dyncss_Configuration_BeRegistryTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 */
 	public function registerFileHandlerExisting() {
-		$this->fixture->registerFileHandler('less', 'tx_Dyncss_Service_DyncssService');
+		$this->fixture->registerFileHandler('less', 'KayStrobach\Dyncss\Service\DyncssService');
 
 		$this->assertSame(
-			'tx_Dyncss_Service_DyncssService',
+			'KayStrobach\Dyncss\Service\DyncssService',
 			get_class($this->fixture->getFileHandler('less'))
 		);
 	}
@@ -41,7 +41,7 @@ class Tx_Dyncss_Configuration_BeRegistryTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 */
 	public function getAllFileHandler() {
-		$this->fixture->registerFileHandler('less', 't3lib_div');
+		$this->fixture->registerFileHandler('less', 'GeneralUtility');
 
 		$this->assertSame(
 			'array',

@@ -1,4 +1,6 @@
 <?php
+
+namespace KayStrobach\Dyncss\Configuration;
 /***************************************************************
 * Copyright notice
 *
@@ -22,12 +24,13 @@
 *
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @author Kay Strobach
  * @package Less
  */
-class tx_DynCss_Configuration_BeRegistry implements t3lib_Singleton {
+class BeRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var array $overrides
@@ -41,10 +44,10 @@ class tx_DynCss_Configuration_BeRegistry implements t3lib_Singleton {
 	protected $fileHandler = array();
 
 	/**
-	 * @return tx_DynCss_Configuration_BeRegistry
+	 * @return \KayStrobach\Dyncss\Configuration\BeRegistry
 	 */
 	static function get() {
-		return t3lib_div::makeInstance('tx_DynCss_Configuration_BeRegistry');
+		return GeneralUtility::makeInstance('KayStrobach\Dyncss\Configuration\BeRegistry');
 	}
 
 	/**
@@ -57,13 +60,13 @@ class tx_DynCss_Configuration_BeRegistry implements t3lib_Singleton {
 
 	/**
 	 * @param $extension
-	 * @return null|tx_Dyncss_Parser_AbstractParser
+	 * @return null|\KayStrobach\Dyncss\Parser\AbstractParser
 	 */
 	function getFileHandler($extension) {
 		if(array_key_exists($extension, $this->fileHandler)) {
 			//@todo check for interface
 			//@todo use factory here
-			return t3lib_div::makeInstance($this->fileHandler[$extension]);
+			return GeneralUtility::makeInstance($this->fileHandler[$extension]);
 		} else {
 			return NULL;
 		}

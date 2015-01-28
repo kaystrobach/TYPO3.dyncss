@@ -1,9 +1,12 @@
 <?php
 
+namespace KayStrobach\Dyncss\Service;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @todo missing docblock
  */
-class tx_Dyncss_Service_DyncssService {
+class DyncssService {
 
 	/**
 	 * @param $inputFile notCompiled Dynamic Css file
@@ -14,7 +17,7 @@ class tx_Dyncss_Service_DyncssService {
 	static function getCompiledFile($inputFile) {
 		$currentFile = self::fixPathForInput($inputFile);
 		$pathInfo = pathinfo($currentFile);
-		$parser = tx_DynCss_Configuration_BeRegistry::get()->getFileHandler($pathInfo['extension']);
+		$parser = \KayStrobach\Dyncss\Configuration\BeRegistry::get()->getFileHandler($pathInfo['extension']);
 		if($parser !== null) {
 			$parser->setOverrides(self::getOverrides());
 			$outputFile = $parser->compileFile($currentFile);
@@ -34,9 +37,9 @@ class tx_Dyncss_Service_DyncssService {
 	 */
 	protected static function fixPathForInput($file) {
 		if(TYPO3_MODE === 'FE') {
-			$file = t3lib_div::getFileAbsFileName($file);
+			$file = GeneralUtility::getFileAbsFileName($file);
 		} elseif(TYPO3_MODE === 'BE') {
-			$file = t3lib_div::resolveBackPath(PATH_typo3 . $file);
+			$file = GeneralUtility::resolveBackPath(PATH_typo3 . $file);
 		}
 		return $file;
 	}
@@ -73,14 +76,15 @@ class tx_Dyncss_Service_DyncssService {
 				// iterate of cObjects and render them to pass them into the vars
 				foreach($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']['overrides.'] as $varName => $varCObj) {
 					if(substr($varName, -1, 1) !== '.') {
-						$cObj = t3lib_div::makeInstance('tslib_cObj');
+						$cObj = GeneralUtility::makeInstance('tslib_cObj');
 						$overrides[$varName] = $cObj->cObjGetSingle($varCObj, $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']['overrides.'][$varName . '.']);
 					}
 				}
 			}
 			//
 		} elseif(TYPO3_MODE === 'BE') {
-			$configManager = t3lib_div::makeInstance('tx_Dyncss_Configuration_BeRegistry');
+			/** @var \KayStrobach\Dyncss\Configuration\BeRegistry $configManager */
+			$configManager = GeneralUtility::makeInstance('tx_Dyncss_Configuration_BeRegistry');
 			$overrides = $configManager->getAllOverrides();
 		}
 		return $overrides;

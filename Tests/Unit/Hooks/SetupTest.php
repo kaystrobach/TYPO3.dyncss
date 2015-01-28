@@ -2,12 +2,12 @@
 
 class tx_Dyncss_Hooks_SetupTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	/**
-	 * @var tx_Dyncss_ExtMgm_Statefield
+	 * @var \KayStrobach\Dyncss\ExtMgm\Statefield
 	 */
 	protected $fixture;
 
 	public function setUp() {
-		#$this->fixture = new tx_Dyncss_ExtMgm_Statefield;
+		#$this->fixture = new \KayStrobach\Dyncss\ExtMgm\Statefield();
 	}
 
 	public function tearDown() {
@@ -19,7 +19,7 @@ class tx_Dyncss_Hooks_SetupTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	 */
 	public function T3libPageRendererRenderPreProcessHook() {
 		$this->assertContains(
-			'tx_Dyncss_Hooks_T3libPageRendererRenderPreProcessHook->execute',
+			'KayStrobach\Dyncss\Hooks\T3libPageRendererRenderPreProcessHook->execute',
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'],
 			'Rendering hook missing'
 		);
@@ -30,7 +30,7 @@ class tx_Dyncss_Hooks_SetupTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	 */
 	public function T3libTcemainHook() {
 		$this->assertContains(
-			'tx_dyncss_Hooks_T3libTcemainHook->clearCachePostProc',
+			'KayStrobach\Dyncss\Hooks\T3libTcemainHook->clearCachePostProc',
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'],
 			'clear cache hook missing'
 		);

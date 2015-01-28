@@ -31,11 +31,11 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 #if(TYPO3_MODE === 'BE') {
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][] = 'tx_Dyncss_Hooks_T3libPageRendererRenderPreProcessHook->execute';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][] = 'KayStrobach\Dyncss\Hooks\T3libPageRendererRenderPreProcessHook->execute';
 #} elseif(TYPO3_MODE === 'FE') {
-#	$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'EXT:dyncss/Classes/Hooks/TslibFeContentPostProcAllHook.php:tx_Dyncss_TslibFeContentPostProcAllHook->main';
+#	$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'KayStrobach\Dyncss\Hooks\TslibFeContentPostProcAllHook->main';
 #}
 
 
 // @todo ClearCacheActionsHookInterface
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'tx_dyncss_Hooks_T3libTcemainHook->clearCachePostProc';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'KayStrobach\Dyncss\Hooks\->clearCachePostProc';

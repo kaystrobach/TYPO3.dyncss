@@ -1,31 +1,35 @@
 <?php
 
+namespace KayStrobach\Dyncss\ExtMgm;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+
 /**
  * @todo missing docblock
  */
-class tx_Dyncss_ExtMgm_Statefield {
+class Statefield {
 
 	/**
 	 * @todo missing docblock
 	 */
 	function main() {
 		$buffer = '';
-		$registry = t3lib_div::makeInstance('tx_DynCss_Configuration_BeRegistry');
+		$registry = GeneralUtility::makeInstance('KayStrobach\Dyncss\Configuration\BeRegistry');
 		$handlers = $registry->getAllFileHandler();
 		if(count($handlers)) {
 			foreach($handlers as $extension => $class) {
 				$buffer .= '<tr><td>*.' . $extension . '</td><td>' . $class . '</td></tr>';
 			}
-			$flashMessage = new t3lib_FlashMessage(
+			$flashMessage = new FlashMessage(
 				'<table><cols><col width="70" /><col width="*"></cols>' . $buffer . '</table>',
 				'Registered Handlers',
-				t3lib_FlashMessage::OK
+				FlashMessage::OK
 			);
 		} else {
-			$flashMessage = new t3lib_FlashMessage(
+			$flashMessage = new FlashMessage(
 				'Please install one of the dyncss_* extensions',
 				'No handler registered! - No dynamic css is handled at all ;/',
-				t3lib_FlashMessage::ERROR
+				FlashMessage::ERROR
 			);
 		}
 		return $flashMessage->render();
