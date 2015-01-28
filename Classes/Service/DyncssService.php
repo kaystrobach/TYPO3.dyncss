@@ -76,7 +76,7 @@ class DyncssService {
 				// iterate of cObjects and render them to pass them into the vars
 				foreach($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']['overrides.'] as $varName => $varCObj) {
 					if(substr($varName, -1, 1) !== '.') {
-						$cObj = GeneralUtility::makeInstance('tslib_cObj');
+						$cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 						$overrides[$varName] = $cObj->cObjGetSingle($varCObj, $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']['overrides.'][$varName . '.']);
 					}
 				}
