@@ -2,6 +2,7 @@
 
 namespace KayStrobach\Dyncss\Parser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 
 /**
  * @todo fix type hinting in @param comments
@@ -153,7 +154,7 @@ abstract class AbstractParser implements ParserInterface{
 	 * @todo add typehinting
 	 */
 	public function setOverrides($overrides) {
-		$this->overrides = GeneralUtility::array_merge_recursive_overrule($this->overrides, $overrides);
+		$this->overrides = ArrayUtility::arrayMergeRecursiveOverrule($this->overrides, $overrides);
 	}
 
 	/**
