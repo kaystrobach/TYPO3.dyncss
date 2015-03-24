@@ -84,7 +84,7 @@ class DyncssService {
 			//
 		} elseif(TYPO3_MODE === 'BE') {
 			/** @var \KayStrobach\Dyncss\Configuration\BeRegistry $configManager */
-			$configManager = GeneralUtility::makeInstance('tx_Dyncss_Configuration_BeRegistry');
+			$configManager = GeneralUtility::makeInstance('KayStrobach\Dyncss\Configuration\BeRegistry');
 			$overrides = $configManager->getAllOverrides();
 		}
 		return $overrides;

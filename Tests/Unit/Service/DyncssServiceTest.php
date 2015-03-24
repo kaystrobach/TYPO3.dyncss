@@ -30,7 +30,7 @@ class tx_Dyncss_Service_DyncssServiceTest extends Tx_Extbase_Tests_Unit_BaseTest
 	 */
 	public function getOverrideForBackend() {
 		$value = md5(time());
-		$beRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_Dyncss_Configuration_BeRegistry');
+		$beRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('KayStrobach\Dyncss\Configuration\BeRegistry');
 		$beRegistry->setOverride('testValue', $value);
 		$this->assertContains(
 			$value,
