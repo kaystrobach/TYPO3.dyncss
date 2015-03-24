@@ -1,6 +1,7 @@
 <?php
 
 namespace KayStrobach\Dyncss\Parser;
+use KayStrobach\Dyncss\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 
@@ -194,10 +195,10 @@ abstract class AbstractParser implements ParserInterface{
 		$this->outputFilename = $outputFilename;
 		$this->cacheFilename = $cacheFilename;
 		
-	        // exit if a precompiled version already exists
-	        if (file_exists($outputFilename)) {
-	            return $outputFilename;
-	        }
+		// exit if a precompiled version already exists
+		if ((file_exists($outputFilename)) && (!ApplicationContext::isDevelopmentModeActive() && (!$this->config['enableDebugMode']))) {
+			return $outputFilename;
+		}
 
 		//write intermediate file, if the source has been changed, the rest is done by the cache management
 		if(@filemtime($preparedFilename) < @filemtime($inputFilename) || $this->_checkIfCompileNeeded($inputFilename)) {
