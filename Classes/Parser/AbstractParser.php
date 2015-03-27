@@ -150,12 +150,16 @@ abstract class AbstractParser implements ParserInterface{
 	}
 
 	/**
-	 * @param $overrides
+	 * @param array $overwrites
 	 *
-	 * @todo add typehinting
 	 */
-	public function setOverrides($overrides) {
-		$this->overrides = ArrayUtility::arrayMergeRecursiveOverrule($this->overrides, $overrides);
+	public function setOverrides($overwrites) {
+		foreach($overwrites as $key => $overwrite) {
+			if(empty($overwrite)) {
+				unset($overwrites[$key]);
+			}
+		}
+		$this->overrides = ArrayUtility::arrayMergeRecursiveOverrule($this->overrides, $overwrites);
 	}
 
 	/**
