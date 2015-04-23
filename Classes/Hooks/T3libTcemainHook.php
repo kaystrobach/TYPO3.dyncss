@@ -21,6 +21,11 @@ class T3libTcemainHook {
 				PATH_site . 'typo3temp/Cache/Data/DynCss',
 				TRUE
 			);
+
+			GeneralUtility::rmdir(
+				PATH_site . 'typo3temp/DynCss',
+				TRUE
+			);
 		}
 	}
 }
