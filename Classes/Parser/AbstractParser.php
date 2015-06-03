@@ -212,7 +212,10 @@ abstract class AbstractParser implements ParserInterface{
 
 			if($fileContent !== false) {
 				file_put_contents($outputFilename, $fileContent);
-				unlink($preparedFilename);
+				// important for some cache clearing scenarios
+				if(file_exists($preparedFilename)) {
+					unlink($preparedFilename);
+				}
 			}
 		}
 
