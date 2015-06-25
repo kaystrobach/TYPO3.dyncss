@@ -87,3 +87,4 @@ Caching
 In production mode, CSS is only re-rendered if the topmost less or sass file, which is directly included by typoscript, is altered.  
 In development mode, also changes in files that are imported inside a less or sass file trigger a new rendering.  
 Development mode is triggered either by TYPO3 application context "Development" or by the preset "Development" in the install tool.
+Additionally rerendering will happen if you change TS values, which are used in the less files.
