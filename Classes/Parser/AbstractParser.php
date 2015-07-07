@@ -35,6 +35,10 @@ abstract class AbstractParser implements ParserInterface{
 	 */
 	protected $config = array();
 
+	public function __construct() {
+		$this->initEmConfiguration();
+	}
+
 	/**
 	 * @todo add docblock
 	 */
