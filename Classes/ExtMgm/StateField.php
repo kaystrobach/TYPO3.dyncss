@@ -18,20 +18,23 @@ class Statefield {
 		$handlers = $registry->getAllFileHandler();
 		if(count($handlers)) {
 			foreach($handlers as $extension => $class) {
-				$buffer .= '<tr><td>*.' . $extension . '</td><td>' . $class . '</td></tr>';
+				$parser = new $class();
+				$buffer .= '<tr><td>*.' . $extension . '</td><td>' . $class . '</td><td>' . $parser->getVersion() . '</td></tr>';
 			}
 			$flashMessage = new FlashMessage(
-				'<table><cols><col width="70" /><col width="*"></cols>' . $buffer . '</table>',
-				'Registered Handlers',
+				'Congrats, you have ' . count($handlers) . ' handlers registered.' ,
+				'',
 				FlashMessage::OK
 			);
+			return $flashMessage->render() . '<table class="t3-table"><thead><tr><th>extension</th><th>class</th><th>version</th></tr></thead>' . $buffer . '</table>';
 		} else {
 			$flashMessage = new FlashMessage(
 				'Please install one of the dyncss_* extensions',
 				'No handler registered! - No dynamic css is handled at all ;/',
 				FlashMessage::ERROR
 			);
+			return $flashMessage->render();
 		}
-		return $flashMessage->render();
+
 	}
 }
