@@ -37,7 +37,6 @@ if (!defined('TYPO3_MODE')) {
 #}
 
 
-// @todo ClearCacheActionsHookInterface
-#$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'KayStrobach\Dyncss\Hooks\T3libTcemainHook->clearCachePostProc';
-
-#$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'][] = '\KayStrobach\Dyncss\Hooks\Backend\ClearCacheActionsHook';
+// clear cache item
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'KayStrobach\Dyncss\Hooks\T3libTcemainHook->clearCachePostProc';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'][] = 'KayStrobach\Dyncss\Hooks\Backend\Toolbar\ClearCacheActionsHook';

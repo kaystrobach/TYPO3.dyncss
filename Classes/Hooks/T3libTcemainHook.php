@@ -16,16 +16,25 @@ class T3libTcemainHook {
 	 * @todo add typehinting
 	 */
 	function clearCachePostProc($params, &$pObj) {
-		if(isset($params['cacheCmd']) && $params['cacheCmd'] = 'pages') {
-			GeneralUtility::rmdir(
-				PATH_site . 'typo3temp/Cache/Data/DynCss',
-				TRUE
-			);
+		if(!isset($params['cacheCmd'])) {
+			return;
+		}
+		switch($params['cacheCmd']) {
+			case 'pages':
+			case 'all':
+			case 'dyncss':
+				GeneralUtility::rmdir(
+					PATH_site . 'typo3temp/Cache/Data/DynCss',
+					TRUE
+				);
 
-			GeneralUtility::rmdir(
-				PATH_site . 'typo3temp/DynCss',
-				TRUE
-			);
+				GeneralUtility::rmdir(
+					PATH_site . 'typo3temp/DynCss',
+					TRUE
+				);
+				break;
+			default:
+
 		}
 	}
 }

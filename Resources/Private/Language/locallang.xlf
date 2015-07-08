@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" product-name="dyncss" date="2014-01-05T14:38:32+01:00">
+		<header/>
+		<body>
+			<trans-unit id="dyncss.toolbar.clearcache.title">
+				<source>Clear DynCSS Cache</source>
+			</trans-unit>
+			<trans-unit id="dyncss.toolbar.clearcache.description">
+				<source>Clear DynCSS Cache</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
