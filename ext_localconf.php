@@ -40,3 +40,11 @@ if (!defined('TYPO3_MODE')) {
 // clear cache item
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'KayStrobach\Dyncss\Hooks\T3libTcemainHook->clearCachePostProc';
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'][] = 'KayStrobach\Dyncss\Hooks\Backend\Toolbar\ClearCacheActionsHook';
+
+// pagets rte xclass parsing RTE.default.contentCSS
+	$dynCssConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dyncss']);
+	if($dynCssConfig['enableRteXclass']) {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase'] = array(
+			'className' => 'KayStrobach\Dyncss\XClass\RteHtmlAreaBase',
+		);
+	}

@@ -3,3 +3,6 @@ state =
 
 # cat=basic; type=boolean; label= Enable Debugmode (e.g. for firesass or similar), if the used parser is able to do that
 enableDebugMode =
+
+# cat=basic; type=boolean; label= Enable xclass for parsing RTE.default.contentCSS
+enableRteXclass = 1
