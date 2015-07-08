@@ -88,3 +88,16 @@ In production mode, CSS is only re-rendered if the topmost less or sass file, wh
 In development mode, also changes in files that are imported inside a less or sass file trigger a new rendering.  
 Development mode is triggered either by TYPO3 application context "Development" or by the preset "Development" in the install tool.
 Additionally rerendering will happen if you change TS values, which are used in the less files.
+
+Additionally we add a a new clear cache button to just clear the dyncss cache.
+
+![dyncss clear cache](Documentation/Images/clearcache.png)
+
+Source maps
+==========
+
+If the compiling library supports source maps, you can enable that feature by enabling the debug mode of dyncss in the extensionmanager settings.
+
+Normally the source maps are appended to the generated css files, to avoid confusion.
+
+![sourcemap](Documentation/Images/sourcemap.png)
