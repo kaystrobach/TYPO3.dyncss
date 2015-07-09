@@ -100,4 +100,14 @@ If the compiling library supports source maps, you can enable that feature by en
 
 Normally the source maps are appended to the generated css files, to avoid confusion.
 
+__IMPORTANT__
+
+You need to disable css concetanation to get the sourcemaps working.
+
+This can be done with the following TS based on your environment:
+```
+themes.configuration.css.concatenate = 0
+page.config.concatenateCss = 0
+```
+
 ![sourcemap](Documentation/Images/sourcemap.png)
