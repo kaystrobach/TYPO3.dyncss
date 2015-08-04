@@ -20,8 +20,6 @@ class T3libTcemainHook {
 			return;
 		}
 		switch($params['cacheCmd']) {
-			case 'pages':
-			case 'all':
 			case 'dyncss':
 				GeneralUtility::rmdir(
 					PATH_site . 'typo3temp/Cache/Data/DynCss',
