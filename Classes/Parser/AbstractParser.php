@@ -129,10 +129,13 @@ abstract class AbstractParser implements ParserInterface{
 	 */
 	public function resolveUrlInCss($url) {
 		if(strpos($url, '://') !== FALSE) {
-			// http://, ftp:// etc. urls leave untouched
+			// http://, ftp:// etc. should not be touched
+			return $url;
+		} elseif(substr($url, 0, 5) === 'data:') {
+			// data:image/svg+xml;base64,... should not be touched
 			return $url;
 		} elseif(substr($url, 0, 1) === '/') {
-			if(substr($url, 0, strlen(PATH_site)) === PATH_site) {
+			if (substr($url, 0, strlen(PATH_site)) === PATH_site) {
 				return '../../' . substr($url, strlen(PATH_site));
 			}
 		} else {
