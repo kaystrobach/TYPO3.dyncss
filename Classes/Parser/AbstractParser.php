@@ -132,8 +132,9 @@ abstract class AbstractParser implements ParserInterface{
 			// http://, ftp:// etc. urls leave untouched
 			return $url;
 		} elseif(substr($url, 0, 1) === '/') {
-			// absolute path, should not be touched
-			return $url;
+			if(substr($url, 0, strlen(PATH_site)) === PATH_site) {
+				return '../../' . substr($url, strlen(PATH_site));
+			}
 		} else {
 			// anything inside TYPO3 has to be adjusted
 			return '../../../../' . dirname($this->removePrefixFromString(PATH_site, $this->inputFilename)) . '/' . $url;
