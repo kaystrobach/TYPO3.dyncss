@@ -1,6 +1,6 @@
 <?php
 
-class tx_Dyncss_ExtMgm_StatefieldTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class tx_Dyncss_ExtMgm_StatefieldTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \KayStrobach\Dyncss\ExtMgm\Statefield
 	 */

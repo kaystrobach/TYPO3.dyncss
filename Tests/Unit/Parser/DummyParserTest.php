@@ -1,10 +1,12 @@
 <?php
 
-class tx_Dyncss_Parser_DummyParserTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class tx_Dyncss_Parser_DummyParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
-	 * @var tx_Dyncss_Parser_DummyParser
+	 * @var \KayStrobach\Dyncss\Parser\DummyParser
 	 */
 	protected $fixture;
+
+	protected $urlsToCheck = array();
 
 	/**
 	 * @var string
@@ -36,7 +38,17 @@ class tx_Dyncss_Parser_DummyParserTest extends Tx_Extbase_Tests_Unit_BaseTestCas
 	";
 
 	public function setUp() {
-		$this->fixture = new tx_Dyncss_Parser_DummyParser();
+		$this->fixture = new \KayStrobach\Dyncss\Parser\DummyParser();
+		$this->urlsToCheck = array(
+			'//typo3.org'         =>  '//typo3.org',
+			'ftp://typo3.org'     => 'ftp://typo3.org',
+			'http://typo3.org'    => 'http://typo3.org',
+			'https://typo3.org'   => 'https://typo3.org',
+			'/absPath'            => '/absPath',
+			'data:suiehihsidgfiu' => 'data:suiehihsidgfiu',
+			'../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot' => '../../../../typo3conf/ext/dyncss/Resources/Public/Less/../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot',
+			PATH_site . 'yeah'    => '../../yeah'
+		);
 	}
 
 	public function tearDown() {
@@ -46,15 +58,28 @@ class tx_Dyncss_Parser_DummyParserTest extends Tx_Extbase_Tests_Unit_BaseTestCas
 	/**
 	 * @test
 	 */
-	public function postCompileTest() {
-		$urls = array(
-			'ftp://typo3.org'  => 'ftp://typo3.org',
-			'http://typo3.org' => 'http://typo3.org',
-			'/absPath'         => '/absPath',
-			'../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot' => '../../../../typo3conf/ext/dyncss/Resources/Public/Less/../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot',
+	public function _postCompile() {
+		/** @var \KayStrobach\Dyncss\Parser\DummyParser $mock */
+		$mock = $this->getMock(
+			'KayStrobach\Dyncss\Parser\DummyParser',
+			array(
+				'resolveUrlInCss'
+			)
 		);
+		$mock
+			->expects($this->exactly(5))
+			->method('resolveUrlInCss');
+		$mock->_postCompile($this->buffer);
+		$this->fixture->_postCompile($this->buffer);
+
+	}
+
+	/**
+	 * @test
+	 */
+	public function resolveUrlInCss() {
 		$this->fixture->inputFilename = PATH_site . 'typo3conf/ext/dyncss/Resources/Public/Less/someLessFile.less';
-		foreach($urls as $key => $url) {
+		foreach($this->urlsToCheck as $key => $url) {
 			$this->assertSame($url, $this->fixture->resolveUrlInCss($key), 'Failed with ' . $key);
 		}
 

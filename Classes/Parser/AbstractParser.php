@@ -128,20 +128,26 @@ abstract class AbstractParser implements ParserInterface{
 	 * @todo add typehinting
 	 */
 	public function resolveUrlInCss($url) {
+		if(substr($url, 0, 2) === '//') {
+			// double slashed indicate a fully fledged url like //typo3.org
+			return $url;
+		}
 		if(strpos($url, '://') !== FALSE) {
 			// http://, ftp:// etc. should not be touched
 			return $url;
-		} elseif(substr($url, 0, 5) === 'data:') {
-			// data:image/svg+xml;base64,... should not be touched
-			return $url;
-		} elseif(substr($url, 0, 1) === '/') {
+		}
+		if(substr($url, 0, 1) === '/') {
 			if (substr($url, 0, strlen(PATH_site)) === PATH_site) {
 				return '../../' . substr($url, strlen(PATH_site));
 			}
-		} else {
-			// anything inside TYPO3 has to be adjusted
-			return '../../../../' . dirname($this->removePrefixFromString(PATH_site, $this->inputFilename)) . '/' . $url;
+			return $url;
 		}
+		if(substr($url, 0, 5) === 'data:') {
+			// data:image/svg+xml;base64,... should not be touched
+			return $url;
+		}
+		// anything inside TYPO3 has to be adjusted
+		return '../../../../' . dirname($this->removePrefixFromString(PATH_site, $this->inputFilename)) . '/' . $url;
 	}
 
 	/**

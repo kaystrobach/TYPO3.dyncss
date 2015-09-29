@@ -1,6 +1,6 @@
 <?php
 
-class Tx_Dyncss_Configuration_BeRegistryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Dyncss_Configuration_BeRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \KayStrobach\Dyncss\Configuration\BeRegistry
 	 */
