@@ -105,9 +105,22 @@ abstract class AbstractParser implements ParserInterface{
 		$relativePath = dirname(substr($this->inputFilename, strlen(PATH_site))) . '/';
 
 		/**
-		 * @todo missing declaration of $matches
+		 * find all matches of url() and adjust uris
 		 */
 		preg_match_all('|url[\s]*\([\s]*(?<url>[^\)]*)[\s]*\)[\s]*|Ui', $string, $matches, PREG_SET_ORDER);
+
+		if(is_array($matches) && count($matches)) {
+			foreach($matches as $key => $value) {
+				$url = trim($value['url'], '\'"');
+				$newPath = $this->resolveUrlInCss($url);
+				$string = str_replace($url, $newPath, $string);
+			}
+		}
+
+		/**
+		 * find all matches of src= and adjust uris
+		 */
+		preg_match_all('|src=([\'"])(?<url>[^\'"]*)\1|Ui', $string, $matches, PREG_SET_ORDER);
 
 		if(is_array($matches) && count($matches)) {
 			foreach($matches as $key => $value) {

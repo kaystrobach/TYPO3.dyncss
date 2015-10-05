@@ -35,6 +35,10 @@ class tx_Dyncss_Parser_DummyParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		  -webkit-font-smoothing: antialiased;
 		  -moz-osx-font-smoothing: grayscale;
 		}
+
+		.msfilter {
+			-ms-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='../../ContentData/symbole/wissenswertes.png', sizingMethod='scale');
+		}
 	";
 
 	public function setUp() {
@@ -67,7 +71,7 @@ class tx_Dyncss_Parser_DummyParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 			)
 		);
 		$mock
-			->expects($this->exactly(5))
+			->expects($this->exactly(6))
 			->method('resolveUrlInCss');
 		$mock->_postCompile($this->buffer);
 		$this->fixture->_postCompile($this->buffer);
