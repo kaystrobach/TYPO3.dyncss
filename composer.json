@@ -2,7 +2,11 @@
   "name": "kaystrobach/dyncss",
   "description": "Compile your CSS dynamically with DynCss Adapters.",
   "type": "typo3-cms-extension",
-  "version": "0.7.9",
+  "keywords": ["dyncss"],
+  "homepage": "http://donate.kay-strobach.de/",
+	"support": {
+		"issues": "https://forge.typo3.org/projects/extension-dyncss/issues"
+	},
   "require": {
     "typo3/cms-core": ">=6.2.0,<8.0"
   },
@@ -16,14 +20,6 @@
   "autoload": {
     "psr-4": {
       "KayStrobach\\Dyncss\\": "Classes/"
-    }
-  },
-  "keywords": ["dyncss"],
-  "homepage": "http://donate.kay-strobach.de/",
-  "extra": {
-    "typo3/cms": {
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/Web"
     }
   }
 }
