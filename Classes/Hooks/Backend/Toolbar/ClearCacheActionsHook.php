@@ -27,11 +27,24 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface {
 		if ($this->getBackendUser()->getTSConfigVal('options.clearCache.system')
 			|| GeneralUtility::getApplicationContext()->isDevelopment()
 			|| ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === TRUE && $this->getBackendUser()->isAdmin())) {
+
+			/**
+			 * Validate Typo3 version and use old core-API for versions below 7.1
+			 *
+			 * @link https://docs.typo3.org/typo3cms/extensions/core/latest/Changelog/7.1/Deprecation-64922-DeprecatedEntryPoints.html
+			 */
+			$hrefParams = ['vC' => $this->getBackendUser()->veriCode(), 'cacheCmd' => 'dyncss', 'ajaxCall' => 1];
+			if (TYPO3_version < '7.1') {
+				$href = 'tce_db.php?' . http_build_query($hrefParams);
+			} else {
+				$href = BackendUtility::getModuleUrl('tce_db', $hrefParams);
+			}
+
 			$cacheActions[] = array(
 				'id' => 'dyncss',
 				'title' => $this->getLanguageService()->sL('LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.title', TRUE),
 				'description' => $this->getLanguageService()->sL('LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.description', TRUE),
-				'href' => BackendUtility::getModuleUrl('tce_db') . '&vC=' . $this->getBackendUser()->veriCode() . '&cacheCmd=dyncss&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
+				'href' => $href . BackendUtility::getUrlToken('tceAction'),
 				'icon' => IconUtility::getSpriteIcon('extensions-dyncss-lightning-blue')
 			);
 			$optionValues[] = 'dyncss';
