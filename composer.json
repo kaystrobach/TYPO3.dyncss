@@ -1,0 +1,16 @@
+{
+	"name": "typo3-ter/dyncss",
+	"type": "typo3-cms-extension",
+	"description": "TYPO3 dyncss-base extension that provides the default infrastructure.",
+	"version": "0.7.4",
+	"homepage": "http://typo3-themes.org",
+	"license": ["GPL-2.0+"],
+	"keywords": ["TYPO3 CMS", "TYPO3 THEMES", "THEMES", "BOOSTRAP", "FLUID", "CUSTOMIZE"],
+	"support": {
+		"issues": "https://forge.typo3.org/projects/extension-dyncss/issues"
+	},
+	"replace": {
+		"dyncss": "self.version",
+		"typo3-ter/dyncss": "self.version"
+	}
+}
