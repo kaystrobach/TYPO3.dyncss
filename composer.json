@@ -1,5 +1,5 @@
 {
-	"name": "typo3-ter/dyncss-base",
+	"name": "typo3-ter/dyncss",
 	"type": "typo3-cms-extension",
 	"description": "TYPO3 dyncss-base extension that provides the default infrastructure.",
 	"version": "1.4.6",
@@ -10,7 +10,7 @@
 		"issues": "https://forge.typo3.org/projects/extension-dyncss/issues"
 	},
 	"replace": {
-		"dyncss_base": "self.version",
-		"typo3-ter/dyncss_base": "self.version"
+		"dyncss": "self.version",
+		"typo3-ter/dyncss": "self.version"
 	}
 }
