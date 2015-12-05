@@ -38,7 +38,7 @@ class DyncssService {
 	protected static function fixPathForInput($file) {
 		if(TYPO3_MODE === 'FE') {
 			$file = GeneralUtility::getFileAbsFileName($file);
-		} elseif(TYPO3_MODE === 'BE') {
+		} elseif(TYPO3_MODE === 'BE' && !TYPO3_cliMode) {
 			$file = GeneralUtility::resolveBackPath(PATH_typo3 . $file);
 		}
 		return $file;
