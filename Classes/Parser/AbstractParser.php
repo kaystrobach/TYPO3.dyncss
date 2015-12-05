@@ -46,8 +46,28 @@ abstract class AbstractParser implements ParserInterface{
 		$this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dyncss']);
 	}
 
+	/**
+	 * returns the parser version, not the extension version
+	 * @return string
+	 */
 	public function getVersion() {
 		return 'unknown';
+	}
+
+	/**
+	 * returns the homepage of the parser
+	 * @return string
+	 */
+	public function getParserHomepage() {
+		return NULL;
+	}
+
+	/**
+	 * return readable name of the project
+	 * @return string
+	 */
+	public function getParserName() {
+		return NULL;
 	}
 
 	/**
