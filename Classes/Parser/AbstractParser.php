@@ -131,9 +131,9 @@ abstract class AbstractParser implements ParserInterface{
 
 		if(is_array($matches) && count($matches)) {
 			foreach($matches as $key => $value) {
-				$url = trim($value['url'], '\'"');
+				$url = trim($value[0], '\'"');
 				$newPath = $this->resolveUrlInCss($url);
-				$string = str_replace($url, $newPath, $string);
+				$string = str_replace($url, "url($newPath)", $string);
 			}
 		}
 
