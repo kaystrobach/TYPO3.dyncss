@@ -31,7 +31,7 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface {
 				'id' => 'dyncss',
 				'title' => $this->getLanguageService()->sL('LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.title', TRUE),
 				'description' => $this->getLanguageService()->sL('LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.description', TRUE),
-				'href' => BackendUtility::getModuleUrl('tce_db') . '&vC=' . $this->getBackendUser()->veriCode() . '&cacheCmd=dyncss&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
+				'href' => BackendUtility::getModuleUrl('tce_db', ['vC' => $this->getBackendUser()->veriCode(), 'cacheCmd' => 'dyncss', 'ajaxCall' => 1]),
 				'icon' => IconUtility::getSpriteIcon('extensions-dyncss-lightning-blue')
 			);
 			$optionValues[] = 'dyncss';
