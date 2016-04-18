@@ -1,6 +1,7 @@
 <?php
 
 namespace KayStrobach\Dyncss\Hooks;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -9,13 +10,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class T3libTcemainHook {
 
 	/**
+	 * Deletes DynCss folders inside typo3temp/
 	 *
-	 * @param string $params
-	 * @param type $pObj
-	 *
-	 * @todo add typehinting
+	 * @param array $params
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 */
-	function clearCachePostProc($params, &$pObj) {
+	function clearCachePostProc(array $params, DataHandler &$pObj) {
 		if(!isset($params['cacheCmd'])) {
 			return;
 		}
