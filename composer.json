@@ -2,7 +2,7 @@
   "name": "kaystrobach/dyncss",
   "description": "Compile your CSS dynamically with DynCss Adapters.",
   "type": "typo3-cms-extension",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "require": {
     "typo3/cms-core": ">=6.2.0,<8.0"
   },
