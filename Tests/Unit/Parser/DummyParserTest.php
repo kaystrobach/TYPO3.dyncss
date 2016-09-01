@@ -50,7 +50,7 @@ class tx_Dyncss_Parser_DummyParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 			'https://typo3.org'   => 'https://typo3.org',
 			'/absPath'            => '/absPath',
 			'data:suiehihsidgfiu' => 'data:suiehihsidgfiu',
-			'../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot' => '../../../../typo3conf/ext/dyncss/Resources/Public/Less/../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot',
+			'../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot' => '../../typo3conf/ext/dyncss/Resources/Public/Less/../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot',
 			PATH_site . 'yeah'    => '../../yeah'
 		);
 	}
