@@ -181,7 +181,9 @@ abstract class AbstractParser implements ParserInterface{
 			return $url;
 		}
 		// anything inside TYPO3 has to be adjusted
-		return '../../../../' . dirname($this->removePrefixFromString(PATH_site, $this->inputFilename)) . '/' . $url;
+                // the generated css is assumed to be in typo3temp/DynCss, thus we read the typo3 
+                // install root by going up 2 levels
+		return '../../' . dirname($this->removePrefixFromString(PATH_site, $this->inputFilename)) . '/' . $url;
 	}
 
 	/**
