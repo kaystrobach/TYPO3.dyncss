@@ -181,7 +181,8 @@ abstract class AbstractParser implements ParserInterface{
 			return $url;
 		}
 		// anything inside TYPO3 has to be adjusted
-		return '../../../../' . dirname($this->removePrefixFromString(PATH_site, $this->inputFilename)) . '/' . $url;
+                // the generated 
+		return '../../' . dirname($this->removePrefixFromString(PATH_site, $this->inputFilename)) . '/' . $url;
 	}
 
 	/**
