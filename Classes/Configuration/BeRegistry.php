@@ -1,6 +1,7 @@
 <?php
 
 namespace KayStrobach\Dyncss\Configuration;
+
 /***************************************************************
 * Copyright notice
 *
@@ -28,87 +29,94 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @author Kay Strobach
- * @package Less
  */
-class BeRegistry implements \TYPO3\CMS\Core\SingletonInterface {
+class BeRegistry implements \TYPO3\CMS\Core\SingletonInterface
+{
+    /**
+     * @var array
+     */
+    protected $overrides = [];
 
-	/**
-	 * @var array $overrides
-	 */
-	protected $overrides = array();
+    /**
+     * @var array
+     */
+    protected $fileHandler = [];
 
-	/**
-	 *
-	 * @var array $fileHandler
-	 */
-	protected $fileHandler = array();
+    /**
+     * @return \KayStrobach\Dyncss\Configuration\BeRegistry
+     */
+    public static function get()
+    {
+        return GeneralUtility::makeInstance('KayStrobach\Dyncss\Configuration\BeRegistry');
+    }
 
-	/**
-	 * @return \KayStrobach\Dyncss\Configuration\BeRegistry
-	 */
-	static function get() {
-		return GeneralUtility::makeInstance('KayStrobach\Dyncss\Configuration\BeRegistry');
-	}
+    /**
+     * @param $extension
+     * @param $class
+     */
+    public function registerFileHandler($extension, $class)
+    {
+        $this->fileHandler[$extension] = $class;
+    }
 
-	/**
-	 * @param $extension
-	 * @param $class
-	 */
-	function registerFileHandler($extension, $class) {
-		$this->fileHandler[$extension] = $class;
-	}
+    /**
+     * @param $extension
+     *
+     * @return null|\KayStrobach\Dyncss\Parser\AbstractParser
+     */
+    public function getFileHandler($extension)
+    {
+        if (array_key_exists($extension, $this->fileHandler)) {
+            //@todo check for interface
+            //@todo use factory here
+            return GeneralUtility::makeInstance($this->fileHandler[$extension]);
+        } else {
+            return;
+        }
+    }
 
-	/**
-	 * @param $extension
-	 * @return null|\KayStrobach\Dyncss\Parser\AbstractParser
-	 */
-	function getFileHandler($extension) {
-		if(array_key_exists($extension, $this->fileHandler)) {
-			//@todo check for interface
-			//@todo use factory here
-			return GeneralUtility::makeInstance($this->fileHandler[$extension]);
-		} else {
-			return NULL;
-		}
-	}
+    /**
+     * @todo missing documentation
+     */
+    public function getAllFileHandler()
+    {
+        return $this->fileHandler;
+    }
 
-	/**
-	 * @todo missing documentation
-	 */
-	function getAllFileHandler() {
-		return $this->fileHandler;
-	}
+    /**
+     * get an override value.
+     *
+     * @param string $name
+     *
+     * @return mixed|null
+     */
+    public function getOverride($name)
+    {
+        if (array_key_exists($name, $this->overrides)) {
+            return $this->overrides[$name];
+        } else {
+            return;
+        }
+    }
 
-	/**
-	 * get an override value
-	 *
-	 * @param string $name
-	 * @return mixed|null
-	 */
-	function getOverride($name) {
-		if(array_key_exists($name, $this->overrides)) {
-			return $this->overrides[$name];
-		} else {
-			return null;
-		}
-	}
+    /**
+     * set an override value.
+     *
+     * @param string $name
+     * @param $value
+     */
+    public function setOverride($name, $value)
+    {
+        $this->overrides[$name] = $value;
+    }
 
-	/**
-	 * set an override value
-	 *
-	 * @param string $name
-	 * @param $value
-	 */
-	function setOverride($name, $value) {
-		$this->overrides[$name] = $value;
-	}
-
-	/**
-	 * get all override values
-	 *
-	 * @return array
-	 */
-	function getAllOverrides() {
-		return $this->overrides;
-	}
+    /**
+     * get all override values.
+     *
+     * @return array
+     */
+    public function getAllOverrides()
+    {
+        return $this->overrides;
+    }
 }
