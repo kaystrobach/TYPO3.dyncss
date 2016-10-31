@@ -28,31 +28,31 @@ namespace KayStrobach\Dyncss\Hooks;
 
 /**
  * @author Kay Strobach
- * @package Less
  */
-class T3libPageRendererRenderPreProcessHook {
-
-	/**
-	 * This function iterates over the arrays and rebuild them to keep the order, as keynames may change.
-	 *
-	 * @param array $params
-	 * @param \TYPO3\CMS\Core\Page\PageRenderer $pagerenderer
-	 */
-	public function execute(&$params, &$pagerenderer) {
-		if(!is_array($params['cssFiles'])) {
-			return ;
-		}
-		$cssFilesArray = array();
-		foreach($params['cssFiles'] as $cssFile => $cssFileSettings) {
-			$compiledFile = \KayStrobach\Dyncss\Service\DyncssService::getCompiledFile($cssFile);
-			if($compiledFile !== $cssFile) {
-				$cssFileSettings['file'] = $compiledFile; //needed for TYPO3 4.6+ ;)
-				$cssFileSettings['compress'] = 0;
-				$cssFilesArray[$compiledFile] = $cssFileSettings;
-			} else {
-				$cssFilesArray[$cssFile] = $cssFileSettings;
-			}
-		}
-		$params['cssFiles'] = $cssFilesArray;
-	}
+class T3libPageRendererRenderPreProcessHook
+{
+    /**
+     * This function iterates over the arrays and rebuild them to keep the order, as keynames may change.
+     *
+     * @param array                             $params
+     * @param \TYPO3\CMS\Core\Page\PageRenderer $pagerenderer
+     */
+    public function execute(&$params, &$pagerenderer)
+    {
+        if (!is_array($params['cssFiles'])) {
+            return;
+        }
+        $cssFilesArray = [];
+        foreach ($params['cssFiles'] as $cssFile => $cssFileSettings) {
+            $compiledFile = \KayStrobach\Dyncss\Service\DyncssService::getCompiledFile($cssFile);
+            if ($compiledFile !== $cssFile) {
+                $cssFileSettings['file'] = $compiledFile; //needed for TYPO3 4.6+ ;)
+                $cssFileSettings['compress'] = 0;
+                $cssFilesArray[$compiledFile] = $cssFileSettings;
+            } else {
+                $cssFilesArray[$cssFile] = $cssFileSettings;
+            }
+        }
+        $params['cssFiles'] = $cssFilesArray;
+    }
 }
