@@ -53,7 +53,8 @@ class Statefield
      * @param FlashMessage $flashMessage
      * @return string
      */
-    protected function renderFlashMessage(FlashMessage $flashMessage) {
+    protected function renderFlashMessage(FlashMessage $flashMessage)
+    {
         if (version_compare(TYPO3_version, '8.0', '<')) {
             return $flashMessage->render();
         } else {

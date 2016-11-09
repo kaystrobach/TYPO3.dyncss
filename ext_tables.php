@@ -9,8 +9,8 @@ if (version_compare(TYPO3_version, '8.0', '<')) {
     );
 } else  {
     /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
-    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class );
-    $iconRegistry->registerIcon( "lightning-blue", \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class, [
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+    $iconRegistry->registerIcon("lightning-blue", \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class, [
         'source' => 'EXT:dyncss/Resources/Public/Icons/lightning_blue.png'
     ]);
 }
