@@ -46,7 +46,7 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
                 $icon = IconUtility::getSpriteIcon('extensions-dyncss-lightning-blue');
             } else {
                 /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
-                $iconFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance (\TYPO3\CMS\Core\Imaging\IconFactory::class);
+                $iconFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
                 $icon = $iconFactory->getIcon('lightning-blue', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL);
             }
 
