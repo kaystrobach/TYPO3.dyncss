@@ -35,7 +35,7 @@ class Statefield
                 FlashMessage::OK
             );
 
-            return $flashMessage->render().'<table class="t3-table"><thead><tr><th>extension</th><th>class</th><th>name</th><th>version</th></tr></thead>'.$buffer.'</table>';
+            return $this->renderFlashMessage($flashMessage).'<table class="t3-table"><thead><tr><th>extension</th><th>class</th><th>name</th><th>version</th></tr></thead>'.$buffer.'</table>';
         } else {
             $flashMessage = new FlashMessage(
                 'Please install one of the dyncss_* extensions',
@@ -43,7 +43,22 @@ class Statefield
                 FlashMessage::ERROR
             );
 
+            return $this->renderFlashMessage($flashMessage);
+        }
+    }
+
+    /**
+     * Render flash message according to TYPO3 version
+     *
+     * @param FlashMessage $flashMessage
+     * @return string
+     */
+    protected function renderFlashMessage(FlashMessage $flashMessage)
+    {
+        if (version_compare(TYPO3_version, '8.0', '<')) {
             return $flashMessage->render();
+        } else {
+            return $flashMessage->getMessageAsMarkup();
         }
     }
 }

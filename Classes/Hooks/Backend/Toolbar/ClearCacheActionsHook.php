@@ -37,18 +37,25 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
              */
             $hrefParams = ['vC' => $this->getBackendUser()->veriCode(), 'cacheCmd' => 'dyncss', 'ajaxCall' => 1];
             if (version_compare(TYPO3_version, '7.1', '<')) {
-                $href = 'tce_db.php?' . http_build_query($hrefParams);
+                $href = 'tce_db.php?' . http_build_query($hrefParams) . BackendUtility::getUrlToken('tceAction');
             } else {
                 $href = BackendUtility::getModuleUrl('tce_db', $hrefParams);
             }
 
+            if (version_compare(TYPO3_version, '8.0', '<')) {
+                $icon = IconUtility::getSpriteIcon('extensions-dyncss-lightning-blue');
+            } else {
+                /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+                $iconFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
+                $icon = $iconFactory->getIcon('lightning-blue', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL);
+            }
 
             $cacheActions[] = [
                 'id' => 'dyncss',
                 'title' => $this->getLanguageService()->sL('LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.title', true),
                 'description' => $this->getLanguageService()->sL('LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.description', true),
-                'href' => $href . BackendUtility::getUrlToken('tceAction'),
-                'icon' => IconUtility::getSpriteIcon('extensions-dyncss-lightning-blue')
+                'href' => $href,
+                'icon' => $icon
             ];
             $optionValues[] = 'dyncss';
         }
