@@ -4,15 +4,23 @@ namespace KayStrobach\Dyncss\ExtMgm;
 
 use KayStrobach\Dyncss\Parser\AbstractParser;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
- * @todo missing docblock
+ * Render state field for extension manager configuration
  */
 class Statefield
 {
     /**
-     * @todo missing docblock
+     * @var FlashMessageService
+     */
+    protected $flashMessageService = NULL;
+
+    /**
+     * Render state field
      */
     public function main()
     {
@@ -29,21 +37,58 @@ class Statefield
                 $buffer .= '<td>'.$parser->getVersion().'</td>';
                 $buffer .= '</tr>';
             }
-            $flashMessage = new FlashMessage(
+            /** @var FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
                 'Congrats, you have '.count($handlers).' handlers registered.',
                 '',
-                FlashMessage::OK
+                FlashMessage::OK,
+                true
             );
-
-            return $flashMessage->render().'<table class="t3-table"><thead><tr><th>extension</th><th>class</th><th>name</th><th>version</th></tr></thead>'.$buffer.'</table>';
+            $this->addFlashMessage($flashMessage);
+            $buffer = '<table class="t3-table table"><thead><tr><th>extension</th><th>class</th><th>name</th><th>version</th></tr></thead>'.$buffer.'</table>';
         } else {
-            $flashMessage = new FlashMessage(
+            /** @var FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
                 'Please install one of the dyncss_* extensions',
                 'No handler registered! - No dynamic css is handled at all ;/',
-                FlashMessage::ERROR
+                FlashMessage::WARNING,
+                true
             );
-
-            return $flashMessage->render();
+            $this->addFlashMessage($flashMessage);
+            return $this->renderFlashMessage();
         }
+        $renderedFlashMessages = $this->renderFlashMessage();
+        return $renderedFlashMessages . $buffer;
     }
+
+    /**
+     * Add flash message to message queue
+     *
+     * @param FlashMessage $flashMessage
+     * @return void
+     */
+    protected function addFlashMessage(FlashMessage $flashMessage)
+    {
+        if(!($this->flashMessageService instanceof FlashMessageService)) {
+            $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        }
+        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+        $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
+        $defaultFlashMessageQueue->enqueue($flashMessage);
+    }
+
+    /**
+     * Render queued flash messages
+     *
+     * @return string
+     */
+    protected function renderFlashMessage()
+    {
+        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+        $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
+        return $defaultFlashMessageQueue->renderFlashMessages();
+    }
+
 }
