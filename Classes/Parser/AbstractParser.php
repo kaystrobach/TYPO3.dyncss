@@ -149,7 +149,7 @@ abstract class AbstractParser implements ParserInterface
                 $url = trim($value[0], '\'"');
                 $orgPath = trim($value['url'], '\'"');
                 $newPath = $this->resolveUrlInCss($orgPath);
-                $string = str_replace($url, "url($newPath)", $string);
+                $string = str_replace($url, 'url("' . $newPath . '")', $string);
             }
         }
 
