@@ -17,7 +17,7 @@ class Statefield
     /**
      * @var FlashMessageService
      */
-    protected $flashMessageService = NULL;
+    protected $flashMessageService = null;
 
     /**
      * Render state field
@@ -71,7 +71,7 @@ class Statefield
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {
-        if(!($this->flashMessageService instanceof FlashMessageService)) {
+        if (!($this->flashMessageService instanceof FlashMessageService)) {
             $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         }
         /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
@@ -90,5 +90,4 @@ class Statefield
         $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         return $defaultFlashMessageQueue->renderFlashMessages();
     }
-
 }
