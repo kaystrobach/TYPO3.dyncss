@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = [
     'description'        => 'Compile your CSS dynamically with DynCss Adapters.',
     'category'           => 'fe',
     'shy'                => 0,
-    'version'            => '0.7.9',
+    'version'            => '0.8.0',
     'dependencies'       => '',
     'conflicts'          => '',
     'priority'           => '',
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = [
     'CGLcompliance_note' => '',
     'constraints'        => [
         'depends' => [
-            'typo3'  => '6.2.10-7.6.99',
+            'typo3'  => '7.6.15-8.6.99',
         ],
         'conflicts' => [
         ],

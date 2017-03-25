@@ -232,7 +232,7 @@ abstract class AbstractParser implements ParserInterface
                 unset($overwrites[$key]);
             }
         }
-        $this->overrides = ArrayUtility::arrayMergeRecursiveOverrule($this->overrides, $overwrites);
+        $this->overrides = array_replace_recursive($this->overrides, $overwrites);
     }
 
     /**

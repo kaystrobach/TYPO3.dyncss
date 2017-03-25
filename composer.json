@@ -2,13 +2,13 @@
   "name": "kaystrobach/dyncss",
   "description": "Compile your CSS dynamically with DynCss Adapters.",
   "type": "typo3-cms-extension",
-  "version": "0.7.9",
+  "version": "0.8.0",
   "license": "GPL-2.0+",
   "require": {
-    "typo3/cms-core": ">=6.2.0,<8.0"
+    "typo3/cms-core": ">=7.6.15,<8.7"
   },
   "require-dev": {
-    "typo3/cms": "^7.6"
+    "typo3/cms": "^8.6"
   },
   "replace": {
     "dyncss": "self.version",
