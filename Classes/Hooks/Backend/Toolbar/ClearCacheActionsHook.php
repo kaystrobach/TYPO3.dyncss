@@ -36,10 +36,10 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
             $translationPrefix = 'LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.';
             $cacheActions[] = [
                 'id' => 'dyncss',
-                'title' => LocalizationUtility::translate($translationPrefix . 'title', 'Dyncss'),
-                'description' => LocalizationUtility::translate($translationPrefix . 'description', 'Dyncss'),
+                'title' => $translationPrefix . 'title',
+                'description' => $translationPrefix . 'description',
                 'href' => BackendUtility::getModuleUrl('tce_db', $hrefParams),
-                'icon' => $iconFactory->getIcon('actions-system-cache-clear-dyncss', Icon::SIZE_SMALL)->render()
+                'iconIdentifier' => 'actions-system-cache-clear-dyncss'
             ];
             $optionValues[] = 'dyncss';
         }

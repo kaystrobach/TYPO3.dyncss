@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="dyncss.toolbar.clearcache.title">
-				<source>Clear DynCSS Cache</source>
+				<source>Clear DynCSS cache</source>
 			</trans-unit>
 			<trans-unit id="dyncss.toolbar.clearcache.description">
-				<source>Clear DynCSS Cache</source>
+				<source>Clear DynCSS file cache, so that all CSS files will be regenerated.</source>
 			</trans-unit>
 		</body>
 	</file>
