@@ -147,7 +147,7 @@ abstract class AbstractParser implements ParserInterface
         if (is_array($matches) && count($matches)) {
             foreach ($matches as $key => $value) {
                 // Don't modify inline SVGs
-                if(strpos($value['url'], 'data:image') === false) {
+                if (strpos($value['url'], 'data:image') === false) {
                     $url = trim($value[0], '\'"');
                     $orgPath = trim($value['url'], '\'"');
                     $newPath = $this->resolveUrlInCss($orgPath);
