@@ -42,8 +42,7 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
                     'href' => BackendUtility::getModuleUrl('tce_db', $hrefParams),
                     'icon' => $iconFactory->getIcon('actions-system-cache-clear-dyncss', Icon::SIZE_SMALL)->render()
                 ];
-            }
-            else {
+            } else {
                 $cacheActions[] = [
                     'id' => 'dyncss',
                     'title' => $translationPrefix . 'title',
