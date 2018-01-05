@@ -11,6 +11,8 @@ use TYPO3\CMS\Extbase\Utility\ArrayUtility;
  */
 abstract class AbstractParser implements ParserInterface
 {
+    const SIGNAL_DYNCSS_AFTER_FILE_PARSED = 'afterFileParsed';
+
     /**
      * @var array
      */
@@ -36,9 +38,19 @@ abstract class AbstractParser implements ParserInterface
      */
     protected $config = [];
 
+    /**
+     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected $signalSlotDispatcher;
+
+
     public function __construct()
     {
         $this->initEmConfiguration();
+
+        // ObjectManager => get SignalSlotDispatcher
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $this->signalSlotDispatcher = $objectManager->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
     }
 
     /**
@@ -289,6 +301,9 @@ abstract class AbstractParser implements ParserInterface
             file_put_contents($preparedFilename, $this->_prepareCompile(file_get_contents($inputFilename)));
 
             $fileContent = $this->_postCompile($this->_compileFile($inputFilename, $preparedFilename, $outputFilename, $cacheFilename));
+
+            // dispatch signal
+            $fileContent = $this->signalSlotDispatcher->dispatch(__CLASS__, self::SIGNAL_DYNCSS_AFTER_FILE_PARSED, [$fileContent]);
 
             if ($fileContent !== false) {
                 file_put_contents($outputFilename, $fileContent);
