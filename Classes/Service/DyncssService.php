@@ -45,13 +45,13 @@ class DyncssService
         if (TYPO3_MODE === 'FE') {
             return GeneralUtility::getFileAbsFileName($file);
         }
-        if (TYPO3_MODE === 'BE' && !$this->isCliRequest()) {
+        if (TYPO3_MODE === 'BE' && !self::isCliRequest()) {
             return GeneralUtility::resolveBackPath(PATH_typo3 . $file);
         }
         return $file;
     }
     
-    protected function isCliRequest()
+    protected static function isCliRequest()
     {
         $isCliRequest = false;
         if (version_compare(TYPO3_version, '8.0.0', '>=')) {
