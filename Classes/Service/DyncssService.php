@@ -46,7 +46,7 @@ class DyncssService
             return GeneralUtility::getFileAbsFileName($file);
         }
         if (TYPO3_MODE === 'BE' && !$this->isCliRequest()) {
-            return GeneralUtility::resolveBackPath(PATH_typo3.$file);
+            return GeneralUtility::resolveBackPath(PATH_typo3 . $file);
         }
         return $file;
     }
@@ -55,9 +55,9 @@ class DyncssService
     {
         $isCliRequest = false;
         if (version_compare(TYPO3_version, '8.0.0', '>=')) {
-                return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
+            return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
         }
-        return isCliRequest = TYPO3_cliMode;
+        return TYPO3_cliMode;
     }
 
     /**
