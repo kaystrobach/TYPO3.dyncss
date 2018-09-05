@@ -42,21 +42,22 @@ class DyncssService
      */
     protected static function fixPathForInput($file)
     {
-
-        $bIsCLI=false;
-        if (version_compare(TYPO3_version, '8.0.0', '>=')) {
-                $bIsCLI=(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
-        } else {
-                $bIsCLI=TYPO3_cliMode;
-        }
-
         if (TYPO3_MODE === 'FE') {
-            $file = GeneralUtility::getFileAbsFileName($file);
-        } elseif (TYPO3_MODE === 'BE' && !$bIsCLI) {
-            $file = GeneralUtility::resolveBackPath(PATH_typo3.$file);
+            return GeneralUtility::getFileAbsFileName($file);
         }
-
+        if (TYPO3_MODE === 'BE' && !$this->isCliRequest()) {
+            return GeneralUtility::resolveBackPath(PATH_typo3.$file);
+        }
         return $file;
+    }
+    
+    protected function isCliRequest()
+    {
+        $isCliRequest = false;
+        if (version_compare(TYPO3_version, '8.0.0', '>=')) {
+                return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
+        }
+        return isCliRequest = TYPO3_cliMode;
     }
 
     /**
