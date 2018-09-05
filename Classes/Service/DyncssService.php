@@ -42,6 +42,9 @@ class DyncssService
      */
     protected static function fixPathForInput($file)
     {
+        if (\empty($file)) {
+            throw new \InvalidArgumentException('fixPathForInput needs a valid $file, the given value was empty');
+        }
         if (TYPO3_MODE === 'FE') {
             return GeneralUtility::getFileAbsFileName($file);
         }
@@ -53,8 +56,7 @@ class DyncssService
     
     protected static function isCliRequest()
     {
-        $isCliRequest = false;
-        if (version_compare(TYPO3_version, '8.0.0', '>=')) {
+        if (\version_compare(TYPO3_version, '8.0.0', '>=')) {
             return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
         }
         return TYPO3_cliMode;
