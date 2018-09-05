@@ -42,7 +42,7 @@ class DyncssService
      */
     protected static function fixPathForInput($file)
     {
-        if (\empty($file)) {
+        if (empty($file)) {
             throw new \InvalidArgumentException('fixPathForInput needs a valid $file, the given value was empty');
         }
         if (TYPO3_MODE === 'FE') {
