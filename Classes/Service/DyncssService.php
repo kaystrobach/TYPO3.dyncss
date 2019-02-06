@@ -114,4 +114,18 @@ class DyncssService
 
         return $overrides;
     }
+
+    /**
+     * Check CLI mode depending on TYPO3 version
+     *
+     * @return int
+     */
+    protected static function isCliMode()
+    {
+        if (version_compare(TYPO3_version, '8.0', '<')) {
+            return TYPO3_cliMode;
+        } else {
+            return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
+        }
+    }
 }
