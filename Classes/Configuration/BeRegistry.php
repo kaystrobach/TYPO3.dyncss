@@ -25,12 +25,14 @@ namespace KayStrobach\Dyncss\Configuration;
 *
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * @author Kay Strobach
  */
-class BeRegistry implements \TYPO3\CMS\Core\SingletonInterface
+class BeRegistry implements SingletonInterface
 {
     /**
      * @var array
@@ -43,11 +45,11 @@ class BeRegistry implements \TYPO3\CMS\Core\SingletonInterface
     protected $fileHandler = [];
 
     /**
-     * @return \KayStrobach\Dyncss\Configuration\BeRegistry
+     * @return object|\KayStrobach\Dyncss\Configuration\BeRegistry
      */
     public static function get()
     {
-        return GeneralUtility::makeInstance('KayStrobach\Dyncss\Configuration\BeRegistry');
+        return GeneralUtility::makeInstance(\KayStrobach\Dyncss\Configuration\BeRegistry::class);
     }
 
     /**
