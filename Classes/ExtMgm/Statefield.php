@@ -107,7 +107,7 @@ class Statefield
             $alertType = 'warning';
             if ($severity === 1) {
                 $alertType = 'danger';
-            } else if ($severity === 0) {
+            } elseif ($severity === 0) {
                 $alertType = 'success';
             }
             // Create required HTML
@@ -119,7 +119,7 @@ class Statefield
             $html .= '          <i class="fa fa-circle fa-stack-2x"></i>' . LF;
             if ($alertType === 'danger') {
                 $html .= '          <i class="fa fa-times fa-stack-1x"></i>' . LF;
-            } else if ($severity === 'success') {
+            } elseif ($severity === 'success') {
                 $html .= '          <i class="fa fa-check fa-stack-1x"></i>' . LF;
             }
             $html .= '        </span>' . LF;
@@ -149,5 +149,4 @@ class Statefield
         }
         return $html;
     }
-
 }
