@@ -42,13 +42,24 @@ class DyncssService
      */
     protected static function fixPathForInput($file)
     {
-        if (TYPO3_MODE === 'FE') {
-            $file = GeneralUtility::getFileAbsFileName($file);
-        } elseif (TYPO3_MODE === 'BE' && !self::isCliMode()) {
-            $file = GeneralUtility::resolveBackPath(PATH_typo3.$file);
+        if (empty($file)) {
+            throw new \InvalidArgumentException('fixPathForInput needs a valid $file, the given value was empty');
         }
-
+        if (TYPO3_MODE === 'FE') {
+            return GeneralUtility::getFileAbsFileName($file);
+        }
+        if (TYPO3_MODE === 'BE' && !self::isCliMode()) {
+            return GeneralUtility::resolveBackPath(PATH_typo3 . $file);
+        }
         return $file;
+    }
+    
+    protected static function isCliRequest()
+    {
+        if (\version_compare(TYPO3_version, '8.0.0', '>=')) {
+            return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
+        }
+        return TYPO3_cliMode;
     }
 
     /**

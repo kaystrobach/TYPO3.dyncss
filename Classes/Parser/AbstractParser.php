@@ -307,6 +307,7 @@ abstract class AbstractParser implements ParserInterface
 
             if ($fileContent !== false) {
                 file_put_contents($outputFilename, $fileContent);
+                \TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($outputFilename);
                 // important for some cache clearing scenarios
                 if (file_exists($preparedFilename)) {
                     unlink($preparedFilename);

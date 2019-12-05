@@ -1,3 +1,5 @@
+<a href="https://enjoy.gitstore.app/repositories/kaystrobach/TYPO3.dyncss"><img src="https://enjoy.gitstore.app/repositories/badge-kaystrobach/TYPO3.dyncss.svg"></a>
+
 Less in general
 ===============
 
@@ -89,7 +91,7 @@ In development mode, also changes in files that are imported inside a less or sa
 Development mode is triggered either by TYPO3 application context "Development" or by the preset "Development" in the install tool.
 Additionally rerendering will happen if you change TS values, which are used in the less files.
 
-Additionally we add a a new clear cache button to just clear the dyncss cache.
+Additionally we add a new clear cache button to just clear the dyncss cache.
 
 ![dyncss clear cache](Documentation/Images/clearcache.png)
 
@@ -102,7 +104,7 @@ Normally the source maps are appended to the generated css files, to avoid confu
 
 __IMPORTANT__
 
-You need to disable css concetanation to get the sourcemaps working.
+You need to disable css concatenation to get the sourcemaps working.
 
 This can be done with the following TS based on your environment:
 ```
