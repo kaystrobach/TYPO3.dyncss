@@ -26,10 +26,11 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
      */
     public function manipulateCacheActions(&$cacheActions, &$optionValues)
     {
-        if ($this->getBackendUser()->getTSConfigVal('options.clearCache.system')
-            || GeneralUtility::getApplicationContext()->isDevelopment()
-            || ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === true && $this->getBackendUser()->isAdmin())
-        ) {
+        $clearCacheSystemUser = (bool)($this->getBackendUser()->getTSConfig()['options.']['clearCache.']['system'] ?? false);
+        $isDevelopment = GeneralUtility::getApplicationContext()->isDevelopment();
+        $clearCacheSystemSys = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === true;
+        $isAdmin = $this->getBackendUser()->isAdmin();
+        if ($clearCacheSystemUser || $isDevelopment || ($clearCacheSystemSys && $isAdmin)) {
             $hrefParams = ['cacheCmd' => 'dyncss', 'ajaxCall' => 1];
             /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
             $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
