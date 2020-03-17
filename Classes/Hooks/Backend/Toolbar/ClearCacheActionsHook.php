@@ -8,10 +8,9 @@
 namespace KayStrobach\Dyncss\Hooks\Backend\Toolbar;
 
 use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 
 class ClearCacheActionsHook implements ClearCacheActionsHookInterface
 {
@@ -31,15 +30,14 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
         $clearCacheSystemSys = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === true;
         $isAdmin = $this->getBackendUser()->isAdmin();
         if ($clearCacheSystemUser || $isDevelopment || ($clearCacheSystemSys && $isAdmin)) {
-            $hrefParams = ['cacheCmd' => 'dyncss', 'ajaxCall' => 1];
-            /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $uriParameters = ['cacheCmd' => 'dyncss', 'ajaxCall' => 1];
             $translationPrefix = 'LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.';
             $cacheActions[] = [
                 'id' => 'dyncss',
                 'title' => $translationPrefix . 'title',
                 'description' => $translationPrefix . 'description',
-                'href' => BackendUtility::getModuleUrl('tce_db', $hrefParams),
+                'href' => (string)$uriBuilder->buildUriFromRoute('tce_db', $uriParameters),
                 'iconIdentifier' => 'actions-system-cache-clear-dyncss'
             ];
             $optionValues[] = 'dyncss';
@@ -49,10 +47,11 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
     }
+
 }
