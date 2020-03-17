@@ -3,6 +3,7 @@
 namespace KayStrobach\Dyncss\Parser;
 
 use KayStrobach\Dyncss\Utilities\ApplicationContext;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 
@@ -149,7 +150,7 @@ abstract class AbstractParser implements ParserInterface
          *
          * @todo missing declaration of inputFilename
          */
-        $relativePath = dirname(substr($this->inputFilename, strlen(PATH_site))).'/';
+        $relativePath = dirname(substr($this->inputFilename, strlen(Environment::getPublicPath() . '/'))).'/';
 
         /*
          * find all matches of url() and adjust uris
@@ -204,8 +205,8 @@ abstract class AbstractParser implements ParserInterface
             return $url;
         }
         if (substr($url, 0, 1) === '/') {
-            if (substr($url, 0, strlen(PATH_site)) === PATH_site) {
-                return '../../'.substr($url, strlen(PATH_site));
+            if (substr($url, 0, strlen(Environment::getPublicPath() . '/')) === Environment::getPublicPath() . '/') {
+                return '../../'.substr($url, strlen(Environment::getPublicPath() . '/'));
             }
 
             return $url;
@@ -215,7 +216,7 @@ abstract class AbstractParser implements ParserInterface
             return $url;
         }
         // anything inside TYPO3 has to be adjusted
-        return '../../../../'.dirname($this->removePrefixFromString(PATH_site, $this->inputFilename)).'/'.$url;
+        return '../../../../'.dirname($this->removePrefixFromString(Environment::getPublicPath() . '/', $this->inputFilename)).'/'.$url;
     }
 
     /**
@@ -279,7 +280,7 @@ abstract class AbstractParser implements ParserInterface
             return $inputFilename;
         }
         if ($outputFilename === null) {
-            $outputFilename = PATH_site.$this->cachePath.basename($inputFilename);
+            $outputFilename = Environment::getPublicPath() . '/' .$this->cachePath.basename($inputFilename);
         }
         $outputFilenamePathInfo = pathinfo($outputFilename);
         $noExtensionFilename = $outputFilename.'-'.hash('crc32b', $inputFilename).'-'.hash('crc32b', serialize($this->overrides)).'-'.hash('crc32b', filemtime($inputFilename));
@@ -329,14 +330,14 @@ abstract class AbstractParser implements ParserInterface
      */
     public function prepareEnvironment($fname)
     {
-        GeneralUtility::mkdir_deep(PATH_site.'typo3temp/', 'DynCss/');
-        if (!is_dir(PATH_site.$this->cachePath)) {
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/DynCss/');
+        if (!is_dir(Environment::getPublicPath() . '/' . $this->cachePath)) {
             throw new \Exception('Can´t create cache directory PATH_site/'.$this->cachePath);
         }
         if (!is_file($fname)) {
             return false;
         }
-
         return true;
     }
+
 }

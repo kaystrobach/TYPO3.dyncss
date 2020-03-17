@@ -53,7 +53,7 @@ class tx_Dyncss_Parser_DummyParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
             '/absPath'                                                              => '/absPath',
             'data:suiehihsidgfiu'                                                   => 'data:suiehihsidgfiu',
             '../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot' => '../../../../typo3conf/ext/dyncss/Resources/Public/Less/../../Public/Contrib/bootstrap/fonts/glyphicons-halflings-regular.eot',
-            PATH_site.'yeah'                                                        => '../../yeah',
+            \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/yeah'                                                        => '../../yeah',
         ];
     }
 
@@ -86,7 +86,7 @@ class tx_Dyncss_Parser_DummyParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
      */
     public function resolveUrlInCss()
     {
-        $this->fixture->inputFilename = PATH_site.'typo3conf/ext/dyncss/Resources/Public/Less/someLessFile.less';
+        $this->fixture->inputFilename = \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3conf/ext/dyncss/Resources/Public/Less/someLessFile.less';
         foreach ($this->urlsToCheck as $key => $url) {
             $this->assertSame($url, $this->fixture->resolveUrlInCss($key), 'Failed with '.$key);
         }
