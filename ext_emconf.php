@@ -10,7 +10,7 @@
 // writing. "version" and "dependencies" must not be touched!
 //#######################################################################
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['dyncss'] = [
     'title'              => 'DynCss - BaseModule',
     'description'        => 'Compile your CSS dynamically with DynCss Adapters.',
     'category'           => 'fe',
