@@ -34,23 +34,13 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
             /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
             $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
             $translationPrefix = 'LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.';
-            if (version_compare(TYPO3_version, '8.7', '<')) {
-                $cacheActions[] = [
-                    'id' => 'dyncss',
-                    'title' => LocalizationUtility::translate($translationPrefix . 'title', 'Dyncss'),
-                    'description' => LocalizationUtility::translate($translationPrefix . 'description', 'Dyncss'),
-                    'href' => BackendUtility::getModuleUrl('tce_db', $hrefParams),
-                    'icon' => $iconFactory->getIcon('actions-system-cache-clear-dyncss', Icon::SIZE_SMALL)->render()
-                ];
-            } else {
-                $cacheActions[] = [
-                    'id' => 'dyncss',
-                    'title' => $translationPrefix . 'title',
-                    'description' => $translationPrefix . 'description',
-                    'href' => BackendUtility::getModuleUrl('tce_db', $hrefParams),
-                    'iconIdentifier' => 'actions-system-cache-clear-dyncss'
-                ];
-            }
+            $cacheActions[] = [
+                'id' => 'dyncss',
+                'title' => $translationPrefix . 'title',
+                'description' => $translationPrefix . 'description',
+                'href' => BackendUtility::getModuleUrl('tce_db', $hrefParams),
+                'iconIdentifier' => 'actions-system-cache-clear-dyncss'
+            ];
             $optionValues[] = 'dyncss';
         }
     }
