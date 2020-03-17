@@ -2,6 +2,7 @@
 
 namespace KayStrobach\Dyncss\Service;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -49,7 +50,7 @@ class DyncssService
             return GeneralUtility::getFileAbsFileName($file);
         }
         if (TYPO3_MODE === 'BE' && !self::isCliMode()) {
-            return GeneralUtility::resolveBackPath(PATH_typo3 . $file);
+            return GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/typo3/' . $file);
         }
         return $file;
     }
