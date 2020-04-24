@@ -34,7 +34,7 @@ $EM_CONF['dyncss'] = [
     'CGLcompliance_note' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.3.00-10.4.99',
+            'typo3' => '9.5.00-10.4.99',
         ],
         'conflicts' => [
         ],
