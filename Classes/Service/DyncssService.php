@@ -72,7 +72,7 @@ class DyncssService
     protected static function fixPathForOutput($file)
     {
         if (TYPO3_MODE === 'FE') {
-            $file = str_replace(Environment::getPublicPath(), '', $file);
+            $file = str_replace(Environment::getPublicPath() . '/', '', $file);
         } elseif (TYPO3_MODE === 'BE') {
             $file = str_replace(Environment::getPublicPath(), '../', $file);
             if (array_key_exists('BACK_PATH', $GLOBALS)) {
