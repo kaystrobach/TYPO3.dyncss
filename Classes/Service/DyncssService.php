@@ -2,6 +2,7 @@
 
 namespace KayStrobach\Dyncss\Service;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -49,17 +50,14 @@ class DyncssService
             return GeneralUtility::getFileAbsFileName($file);
         }
         if (TYPO3_MODE === 'BE' && !self::isCliMode()) {
-            return GeneralUtility::resolveBackPath(PATH_typo3 . $file);
+            return GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/typo3/' . $file);
         }
         return $file;
     }
     
     protected static function isCliRequest()
     {
-        if (\version_compare(TYPO3_version, '8.0.0', '>=')) {
-            return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
-        }
-        return TYPO3_cliMode;
+        return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
     }
 
     /**
@@ -74,9 +72,9 @@ class DyncssService
     protected static function fixPathForOutput($file)
     {
         if (TYPO3_MODE === 'FE') {
-            $file = str_replace(PATH_site, '', $file);
+            $file = str_replace(Environment::getPublicPath(), '', $file);
         } elseif (TYPO3_MODE === 'BE') {
-            $file = str_replace(PATH_site, '../', $file);
+            $file = str_replace(Environment::getPublicPath(), '../', $file);
             if (array_key_exists('BACK_PATH', $GLOBALS)) {
                 $file = $GLOBALS['BACK_PATH'].$file;
             }
@@ -122,10 +120,6 @@ class DyncssService
      */
     protected static function isCliMode()
     {
-        if (version_compare(TYPO3_version, '8.0', '<')) {
-            return defined('TYPO3_cliMode');
-        } else {
-            return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
-        }
+        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace KayStrobach\Dyncss\Hooks;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -24,15 +25,8 @@ class T3libTcemainHook
         switch ($params['cacheCmd']) {
             case 'dyncss':
                 $pObj->clear_cacheCmd("pages");
-                GeneralUtility::rmdir(
-                    PATH_site.'typo3temp/Cache/Data/DynCss',
-                    true
-                );
-
-                GeneralUtility::rmdir(
-                    PATH_site.'typo3temp/DynCss',
-                    true
-                );
+                GeneralUtility::rmdir(Environment::getPublicPath() . '/typo3temp/Cache/Data/DynCss', true);
+                GeneralUtility::rmdir(Environment::getPublicPath() . '/typo3temp/DynCss', true);
                 break;
             default:
 
