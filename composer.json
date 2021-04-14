@@ -7,7 +7,6 @@
     "typo3/cms-core": ">=9.5,<10.5"
   },
   "replace": {
-    "dyncss": "self.version",
     "typo3-ter/dyncss": "self.version"
   },
   "autoload": {
@@ -20,7 +19,8 @@
   "extra": {
     "typo3/cms": {
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/Web"
+      "web-dir": ".Build/Web",
+      "extension-key": "dyncss"
     }
   }
 }
