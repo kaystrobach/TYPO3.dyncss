@@ -2,6 +2,8 @@
 
 namespace KayStrobach\Dyncss\Parser;
 
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use KayStrobach\Dyncss\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,8 +52,8 @@ abstract class AbstractParser implements ParserInterface
         $this->initEmConfiguration();
 
         // ObjectManager => get SignalSlotDispatcher
-        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->signalSlotDispatcher = $objectManager->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->signalSlotDispatcher = $objectManager->get(Dispatcher::class);
     }
 
     /**
@@ -308,7 +310,7 @@ abstract class AbstractParser implements ParserInterface
 
             if ($fileContent !== false) {
                 file_put_contents($outputFilename, $fileContent);
-                \TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($outputFilename);
+                GeneralUtility::fixPermissions($outputFilename);
                 // important for some cache clearing scenarios
                 if (file_exists($preparedFilename)) {
                     unlink($preparedFilename);

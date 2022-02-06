@@ -7,7 +7,9 @@
  */
 namespace KayStrobach\Dyncss\Utilities;
 
+use TYPO3\CMS\Install\Configuration\Context\ContextFeature;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Core\Environment;
 
 class ApplicationContext
 {
@@ -38,10 +40,9 @@ class ApplicationContext
      */
     public function isDevelopmentApplicationContext()
     {
-        if (GeneralUtility::getApplicationContext()->isDevelopment()) {
+        if (Environment::getContext()->isDevelopment()) {
             return true;
         }
-
         return false;
     }
 
@@ -56,7 +57,7 @@ class ApplicationContext
         /* @var \TYPO3\CMS\Install\Configuration\Context\ContextFeature $contextPreset */
         $contextFeature = null;
         foreach ($features as $feature) {
-            if ($feature instanceof \TYPO3\CMS\Install\Configuration\Context\ContextFeature) {
+            if ($feature instanceof ContextFeature) {
                 $contextFeature = $feature;
                 continue;
             }

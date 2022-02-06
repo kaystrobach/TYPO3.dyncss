@@ -2,6 +2,8 @@
 
 namespace KayStrobach\Dyncss\Service;
 
+use KayStrobach\Dyncss\Configuration\BeRegistry;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -21,7 +23,7 @@ class DyncssService
     {
         $currentFile = self::fixPathForInput($inputFile);
         $pathInfo = pathinfo($currentFile);
-        $parser = \KayStrobach\Dyncss\Configuration\BeRegistry::get()->getFileHandler($pathInfo['extension']);
+        $parser = BeRegistry::get()->getFileHandler($pathInfo['extension']);
         if ($parser !== null) {
             $parser->setOverrides(self::getOverrides());
             $outputFile = $parser->compileFile($currentFile);
@@ -46,10 +48,10 @@ class DyncssService
         if (empty($file)) {
             throw new \InvalidArgumentException('fixPathForInput needs a valid $file, the given value was empty');
         }
-        if (TYPO3_MODE === 'FE') {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
             return GeneralUtility::getFileAbsFileName($file);
         }
-        if (TYPO3_MODE === 'BE' && !self::isCliMode()) {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend() && !self::isCliMode()) {
             return GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/typo3/' . $file);
         }
         return $file;
@@ -71,9 +73,9 @@ class DyncssService
      */
     protected static function fixPathForOutput($file)
     {
-        if (TYPO3_MODE === 'FE') {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
             $file = str_replace(Environment::getPublicPath() . '/', '', $file);
-        } elseif (TYPO3_MODE === 'BE') {
+        } elseif (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             $file = str_replace(Environment::getPublicPath(), '../', $file);
             if (array_key_exists('BACK_PATH', $GLOBALS)) {
                 $file = $GLOBALS['BACK_PATH'].$file;
@@ -91,7 +93,7 @@ class DyncssService
     public static function getOverrides()
     {
         $overrides = [];
-        if (TYPO3_MODE === 'FE') {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
             if ((array_key_exists('plugin.', $GLOBALS['TSFE']->tmpl->setup))
             && (array_key_exists('tx_dyncss.', $GLOBALS['TSFE']->tmpl->setup['plugin.']))
             && (array_key_exists('overrides.', $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']))) {
@@ -104,7 +106,7 @@ class DyncssService
                 }
             }
             //
-        } elseif (TYPO3_MODE === 'BE') {
+        } elseif (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             /** @var \KayStrobach\Dyncss\Configuration\BeRegistry $configManager */
             $configManager = GeneralUtility::makeInstance('KayStrobach\Dyncss\Configuration\BeRegistry');
             $overrides = $configManager->getAllOverrides();

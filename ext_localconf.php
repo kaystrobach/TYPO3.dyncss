@@ -26,7 +26,7 @@
 /**
  * @author Kay Strobach
  */
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 //if(TYPO3_MODE === 'BE') {

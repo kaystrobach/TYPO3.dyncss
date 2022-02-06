@@ -7,10 +7,11 @@
  */
 namespace KayStrobach\Dyncss\Hooks\Backend\Toolbar;
 
-use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ClearCacheActionsHook implements ClearCacheActionsHookInterface
 {
@@ -20,14 +21,12 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
      *
      * @param array $cacheActions Array of CacheMenuItems
      * @param array $optionValues Array of AccessConfigurations-identifiers (typically  used by userTS with options.clearCache.identifier)
-     *
-     * @return void
      */
     public function manipulateCacheActions(&$cacheActions, &$optionValues)
     {
         $clearCacheSystemUser = (bool)($this->getBackendUser()->getTSConfig()['options.']['clearCache.']['system'] ?? false);
-        $isDevelopment = GeneralUtility::getApplicationContext()->isDevelopment();
-        $clearCacheSystemSys = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === true;
+        $isDevelopment = Environment::getContext()->isDevelopment();
+        $clearCacheSystemSys = $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] ?? false;
         $isAdmin = $this->getBackendUser()->isAdmin();
         if ($clearCacheSystemUser || $isDevelopment || ($clearCacheSystemSys && $isAdmin)) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -53,5 +52,4 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
     {
         return $GLOBALS['BE_USER'];
     }
-
 }

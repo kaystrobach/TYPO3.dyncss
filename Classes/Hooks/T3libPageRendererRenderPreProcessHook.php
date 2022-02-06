@@ -2,6 +2,7 @@
 
 namespace KayStrobach\Dyncss\Hooks;
 
+use KayStrobach\Dyncss\Service\DyncssService;
 /***************************************************************
 * Copyright notice
 *
@@ -25,7 +26,6 @@ namespace KayStrobach\Dyncss\Hooks;
 *
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
 /**
  * @author Kay Strobach
  */
@@ -44,7 +44,7 @@ class T3libPageRendererRenderPreProcessHook
         }
         $cssFilesArray = [];
         foreach ($params['cssFiles'] as $cssFile => $cssFileSettings) {
-            $compiledFile = \KayStrobach\Dyncss\Service\DyncssService::getCompiledFile($cssFile);
+            $compiledFile = DyncssService::getCompiledFile($cssFile);
             if ($compiledFile !== $cssFile) {
                 $cssFileSettings['file'] = $compiledFile; //needed for TYPO3 4.6+ ;)
                 $cssFileSettings['compress'] = 0;

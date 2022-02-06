@@ -5,7 +5,7 @@ namespace KayStrobach\Dyncss\Parser;
 /**
  * @todo add docblock
  */
-class DummyParser extends \KayStrobach\Dyncss\Parser\AbstractParser
+class DummyParser extends AbstractParser
 {
     /**
      * @param $inputFilename

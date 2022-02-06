@@ -2,10 +2,11 @@
 
 namespace KayStrobach\Dyncss\Hooks;
 
+use KayStrobach\Dyncss\Service\DyncssService;
 /**
  * @todo missing docblock
  */
-class TslibFeContentPostProcAllHook extends \KayStrobach\Dyncss\Hooks\T3libPageRendererRenderPreProcessHook
+class TslibFeContentPostProcAllHook extends T3libPageRendererRenderPreProcessHook
 {
     /**
      * @todo add typehinting
@@ -28,7 +29,7 @@ class TslibFeContentPostProcAllHook extends \KayStrobach\Dyncss\Hooks\T3libPageR
                 if ($questionMarkPos !== false) {
                     $cssFile = substr($cssFile, 0, $questionMarkPos);
                 }
-                $compiledFile = \KayStrobach\Dyncss\Service\DyncssService::getCompiledFile($cssFile);
+                $compiledFile = DyncssService::getCompiledFile($cssFile);
                 if ($compiledFile !== $cssFile) {
                     //$linkElements->item($i)->attributes->getNamedItem('href')->nodeValue = $compiledFile . '?' . filemtime($compiledFile);
                     $param['pObj']->content = str_replace($cssFile, $compiledFile, $param['pObj']->content);
