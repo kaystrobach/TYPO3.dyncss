@@ -61,7 +61,7 @@ abstract class AbstractParser implements ParserInterface
      */
     protected function initEmConfiguration()
     {
-        $this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dyncss']);
+        $this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dyncss'] ?? '');
     }
 
     /**
