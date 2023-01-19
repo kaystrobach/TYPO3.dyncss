@@ -295,7 +295,7 @@ abstract class AbstractParser implements ParserInterface
         $this->cacheFilename = $cacheFilename;
 
         // exit if a precompiled version already exists
-        if ((file_exists($outputFilename)) && (!ApplicationContext::isDevelopmentModeActive() && (!$this->config['enableDebugMode']))) {
+        if ((file_exists($outputFilename)) && (!ApplicationContext::isDevelopmentModeActive())) {
             return $outputFilename;
         }
 
