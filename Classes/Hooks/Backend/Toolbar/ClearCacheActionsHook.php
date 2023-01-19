@@ -26,9 +26,8 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
     {
         $clearCacheSystemUser = (bool)($this->getBackendUser()->getTSConfig()['options.']['clearCache.']['system'] ?? false);
         $isDevelopment = Environment::getContext()->isDevelopment();
-        $clearCacheSystemSys = $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] ?? false;
         $isAdmin = $this->getBackendUser()->isAdmin();
-        if ($clearCacheSystemUser || $isDevelopment || ($clearCacheSystemSys && $isAdmin)) {
+        if ($clearCacheSystemUser || $isDevelopment || $isAdmin) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $uriParameters = ['cacheCmd' => 'dyncss', 'ajaxCall' => 1];
             $translationPrefix = 'LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.';
