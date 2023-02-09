@@ -2,10 +2,8 @@
 
 namespace KayStrobach\Dyncss\Parser;
 
-use KayStrobach\Dyncss\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 
 /**
  * @todo fix type hinting in @param comments
@@ -292,13 +290,15 @@ abstract class AbstractParser implements ParserInterface
         $this->outputFilename = $outputFilename;
         $this->cacheFilename = $cacheFilename;
 
+        $applicationContext = Environment::getContext();
+
         // exit if a precompiled version already exists
-        if ((file_exists($outputFilename)) && (!ApplicationContext::isDevelopmentModeActive() && (!$this->config['enableDebugMode']))) {
+        if ((file_exists($outputFilename)) && (!$applicationContext->isDevelopment() && (!$this->config['enableDebugMode']))) {
             return $outputFilename;
         }
 
         //write intermediate file, if the source has been changed, the rest is done by the cache management
-        if (@filemtime($outputFilename) < @filemtime($inputFilename) || $this->_checkIfCompileNeeded($inputFilename) || ApplicationContext::isDevelopmentModeActive()) {
+        if (@filemtime($outputFilename) < @filemtime($inputFilename) || $this->_checkIfCompileNeeded($inputFilename) || $applicationContext->isDevelopment()) {
             file_put_contents($preparedFilename, $this->_prepareCompile(file_get_contents($inputFilename)));
 
             $fileContent = $this->_postCompile($this->_compileFile($inputFilename, $preparedFilename, $outputFilename, $cacheFilename));
@@ -339,5 +339,4 @@ abstract class AbstractParser implements ParserInterface
         }
         return true;
     }
-
 }
