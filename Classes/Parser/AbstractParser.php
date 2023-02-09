@@ -339,5 +339,4 @@ abstract class AbstractParser implements ParserInterface
         }
         return true;
     }
-
 }

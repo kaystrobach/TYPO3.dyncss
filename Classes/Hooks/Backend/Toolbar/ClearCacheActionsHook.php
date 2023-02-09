@@ -54,5 +54,4 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
     {
         return $GLOBALS['BE_USER'];
     }
-
 }
