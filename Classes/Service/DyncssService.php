@@ -13,8 +13,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DyncssService
 {
     /**
-     * @param $inputFile notCompiled Dynamic Css file
-     *
      * @return string path to the compiled file, or to the input file, if not modified
      *
      * @todo add typehinting
@@ -51,15 +49,10 @@ class DyncssService
         if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
             return GeneralUtility::getFileAbsFileName($file);
         }
-        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend() && !self::isCliMode()) {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend() && !Environment::isCli()) {
             return GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/typo3/' . $file);
         }
         return $file;
-    }
-    
-    protected static function isCliRequest()
-    {
-        return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
     }
 
     /**
@@ -113,15 +106,5 @@ class DyncssService
         }
 
         return $overrides;
-    }
-
-    /**
-     * Check CLI mode depending on TYPO3 version
-     *
-     * @return int
-     */
-    protected static function isCliMode()
-    {
-        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
     }
 }

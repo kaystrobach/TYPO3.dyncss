@@ -2,12 +2,10 @@
 
 namespace KayStrobach\Dyncss\Parser;
 
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use KayStrobach\Dyncss\Utilities\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 
 /**
  * @todo fix type hinting in @param comments
@@ -42,18 +40,15 @@ abstract class AbstractParser implements ParserInterface
     protected $config = [];
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @var EventDispatcher
      */
-    protected $signalSlotDispatcher;
+    protected EventDispatcher $eventDispatcher;
 
 
     public function __construct()
     {
         $this->initEmConfiguration();
-
-        // ObjectManager => get SignalSlotDispatcher
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->signalSlotDispatcher = $objectManager->get(Dispatcher::class);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
     }
 
     /**
@@ -233,7 +228,7 @@ abstract class AbstractParser implements ParserInterface
      */
     public function removePrefixFromString($prefix, $string)
     {
-        if (GeneralUtility::isFirstPartOfStr($string, $prefix)) {
+        if (str_starts_with($string, $prefix)) {
             return substr($string, strlen($prefix));
         } else {
             return $string;
@@ -305,8 +300,8 @@ abstract class AbstractParser implements ParserInterface
 
             $fileContent = $this->_postCompile($this->_compileFile($inputFilename, $preparedFilename, $outputFilename, $cacheFilename));
 
-            // dispatch signal
-            $fileContent = $this->signalSlotDispatcher->dispatch(__CLASS__, self::SIGNAL_DYNCSS_AFTER_FILE_PARSED, [$fileContent]);
+            // I couldn't find any usage of this event, so I'm not sure if this replacement with the event dispatcher is correct
+            $this->eventDispatcher->dispatch($this);
 
             if ($fileContent !== false) {
                 file_put_contents($outputFilename, $fileContent);

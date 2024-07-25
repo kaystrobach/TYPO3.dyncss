@@ -10,19 +10,19 @@ namespace KayStrobach\Dyncss\Utilities;
 use TYPO3\CMS\Install\Configuration\Context\ContextFeature;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Install\Configuration\FeatureManager;
 
 class ApplicationContext
 {
     /**
-     * @var \TYPO3\CMS\Install\Configuration\FeatureManager
+     * @var FeatureManager
      * @inject
      */
-    protected $featureManager;
+    protected FeatureManager $featureManager;
 
     public function __construct()
     {
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        $this->featureManager = $objectManager->get('TYPO3\CMS\Install\Configuration\FeatureManager');
+        $this->featureManager = GeneralUtility::makeInstance(FeatureManager::class);
     }
 
     /**
