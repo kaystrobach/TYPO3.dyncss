@@ -8,6 +8,7 @@
 namespace KayStrobach\Dyncss\Hooks\Backend\Toolbar;
 
 use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -26,10 +27,9 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
     public function manipulateCacheActions(&$cacheActions, &$optionValues)
     {
         $clearCacheSystemUser = (bool)($this->getBackendUser()->getTSConfig()['options.']['clearCache.']['system'] ?? false);
-        $isDevelopment = GeneralUtility::getApplicationContext()->isDevelopment();
-        $clearCacheSystemSys = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === true;
+        $isDevelopment = Environment::getContext()->isDevelopment();
         $isAdmin = $this->getBackendUser()->isAdmin();
-        if ($clearCacheSystemUser || $isDevelopment || ($clearCacheSystemSys && $isAdmin)) {
+        if ($clearCacheSystemUser || $isDevelopment || $isAdmin) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $uriParameters = ['cacheCmd' => 'dyncss', 'ajaxCall' => 1];
             $translationPrefix = 'LLL:EXT:dyncss/Resources/Private/Language/locallang.xlf:dyncss.toolbar.clearcache.';
@@ -53,5 +53,4 @@ class ClearCacheActionsHook implements ClearCacheActionsHookInterface
     {
         return $GLOBALS['BE_USER'];
     }
-
 }
