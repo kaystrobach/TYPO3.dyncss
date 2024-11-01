@@ -46,6 +46,10 @@ abstract class AbstractParser implements ParserInterface
      */
     protected $signalSlotDispatcher;
 
+    protected string $inputFilename = '';
+    protected string $outputFilename = '';
+    protected string $cacheFilename = '';
+
 
     public function __construct()
     {
