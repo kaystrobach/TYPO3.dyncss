@@ -21,6 +21,22 @@ abstract class AbstractParser implements ParserInterface
     protected $overrides = [];
 
     /**
+     * file being compiled, the compiled file and the cache file (set by compileFile())
+     * @var string
+     */
+    protected $inputFilename = '';
+
+    /**
+     * @var string
+     */
+    protected $outputFilename = '';
+
+    /**
+     * @var string
+     */
+    protected $cacheFilename = '';
+
+    /**
      * @var null|object
      */
     protected $cssParserObject = null;

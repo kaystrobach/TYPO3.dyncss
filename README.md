@@ -158,3 +158,17 @@ page.config.concatenateCss = 0
 ```
 
 ![sourcemap](Documentation/Images/sourcemap.png)
+
+Tests
+=====
+
+Functional tests in docker against TYPO3 12, 13 and 14 (SQLite):
+
+```
+Build/Scripts/runTests.sh -t 12             # TYPO3 12, also 13 or 14
+Build/Scripts/runTests.sh -a                # all versions
+Build/Scripts/runTests.sh -t 14 -- --filter DyncssServiceTest
+```
+
+Each version gets its own composer project in `.Build/v<version>`, `-u` updates its dependencies.
+
