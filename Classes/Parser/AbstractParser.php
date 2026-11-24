@@ -2,8 +2,9 @@
 
 namespace KayStrobach\Dyncss\Parser;
 
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use KayStrobach\Dyncss\Utilities\ApplicationContext;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -40,15 +41,15 @@ abstract class AbstractParser implements ParserInterface
     protected $config = [];
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
-    protected EventDispatcher $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
 
     public function __construct()
     {
         $this->initEmConfiguration();
-        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     /**
@@ -56,7 +57,12 @@ abstract class AbstractParser implements ParserInterface
      */
     protected function initEmConfiguration()
     {
-        $this->config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dyncss'] ?? '');
+        try {
+            $this->config = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('dyncss');
+        } catch (\Throwable) {
+            // not configured yet
+            $this->config = [];
+        }
     }
 
     /**
@@ -329,7 +335,7 @@ abstract class AbstractParser implements ParserInterface
     {
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/DynCss/');
         if (!is_dir(Environment::getPublicPath() . '/' . $this->cachePath)) {
-            throw new \Exception('Can´t create cache directory PATH_site/'.$this->cachePath);
+            throw new \Exception('Can´t create cache directory PATH_site/'.$this->cachePath, 4838349330);
         }
         if (!is_file($fname)) {
             return false;

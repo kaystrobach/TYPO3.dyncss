@@ -1,0 +1,26 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  KayStrobach\Dyncss\:
+    resource: '../Classes/*'
+    # created with GeneralUtility::makeInstance() by the core (hooks, extension configuration) or by the registry
+    exclude:
+      - '../Classes/Hooks/*'
+      - '../Classes/ExtMgm/*'
+      - '../Classes/Parser/*'
+      - '../Classes/Configuration/*'
+      - '../Classes/Utilities/*'
+
+  KayStrobach\Dyncss\Command\CompileCommand:
+    tags:
+      - name: console.command
+        command: 'dyncss:compile'
+        description: 'Compiles a dynamic stylesheet (less, scss, ...) and prints the path of the CSS file'
+
+  KayStrobach\Dyncss\EventListener\AddClearCacheAction:
+    tags:
+      - name: event.listener
+        identifier: 'dyncss/clear-cache-action'

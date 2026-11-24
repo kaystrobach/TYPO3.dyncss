@@ -37,14 +37,14 @@ class T3libPageRendererRenderPreProcessHook
      * @param array                             $params
      * @param \TYPO3\CMS\Core\Page\PageRenderer $pagerenderer
      */
-    public function execute(&$params, &$pagerenderer)
+    public function execute(array &$params, $pagerenderer): void
     {
-        if (!is_array($params['cssFiles'])) {
+        if (!is_array($params['cssFiles'] ?? null)) {
             return;
         }
         $cssFilesArray = [];
         foreach ($params['cssFiles'] as $cssFile => $cssFileSettings) {
-            $compiledFile = DyncssService::getCompiledFile($cssFile);
+            $compiledFile = DyncssService::getCompiledFile((string)$cssFile);
             if ($compiledFile !== $cssFile) {
                 $cssFileSettings['file'] = $compiledFile; //needed for TYPO3 4.6+ ;)
                 $cssFileSettings['compress'] = 0;

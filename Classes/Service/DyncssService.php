@@ -3,108 +3,145 @@
 namespace KayStrobach\Dyncss\Service;
 
 use KayStrobach\Dyncss\Configuration\BeRegistry;
-use TYPO3\CMS\Core\Http\ApplicationType;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
- * @todo missing docblock
+ * Compiles a dynamic stylesheet (less, scss, ...) with the parser registered for its file ending.
  */
 class DyncssService
 {
     /**
-     * @return string path to the compiled file, or to the input file, if not modified
-     *
-     * @todo add typehinting
+     * @return string path to the compiled file, or the input file, if no parser handles it
      */
-    public static function getCompiledFile($inputFile)
+    public static function getCompiledFile(string $inputFile): string
     {
         $currentFile = self::fixPathForInput($inputFile);
-        $pathInfo = pathinfo($currentFile);
-        $parser = BeRegistry::get()->getFileHandler($pathInfo['extension']);
-        if ($parser !== null) {
-            $parser->setOverrides(self::getOverrides());
-            $outputFile = $parser->compileFile($currentFile);
-
-            return self::fixPathForOutput($outputFile);
-        } else {
+        $parser = BeRegistry::get()->getFileHandler(pathinfo($currentFile, PATHINFO_EXTENSION));
+        if ($parser === null) {
             return $inputFile;
         }
+        $parser->setOverrides(self::getOverrides());
+        return self::fixPathForOutput($parser->compileFile($currentFile));
     }
 
     /**
-     * Just makes path absolute.
-     *
-     * @param $file
-     *
-     * @return string
-     *
-     * @todo add typehinting
+     * Absolute file name of the given file: EXT: paths, paths relative to the public folder and
+     * web paths like /_assets/<hash>/Css/style.less (composer mode).
      */
-    protected static function fixPathForInput($file)
+    protected static function fixPathForInput(string $file): string
     {
-        if (empty($file)) {
-            throw new \InvalidArgumentException('fixPathForInput needs a valid $file, the given value was empty');
+        if ($file === '') {
+            throw new \InvalidArgumentException('fixPathForInput needs a valid $file, the given value was empty', 1099502636);
         }
-        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
+        // query string of versioned files
+        $file = explode('?', $file, 2)[0];
+        if (PathUtility::isExtensionPath($file)) {
             return GeneralUtility::getFileAbsFileName($file);
         }
-        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend() && !Environment::isCli()) {
-            return GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/typo3/' . $file);
+        if (str_starts_with($file, '/')) {
+            if (is_file($file)) {
+                return $file;
+            }
+            // web path below the public folder
+            return Environment::getPublicPath() . $file;
         }
-        return $file;
-    }
-
-    /**
-     * Fixes the path for fe or be usage.
-     *
-     * @param $file
-     *
-     * @return mixed
-     *
-     * @todo add typehinting
-     */
-    protected static function fixPathForOutput($file)
-    {
-        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
-            $file = str_replace(Environment::getPublicPath() . '/', '', $file);
-        } elseif (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
-            $file = str_replace(Environment::getPublicPath(), '../', $file);
-            if (array_key_exists('BACK_PATH', $GLOBALS)) {
-                $file = $GLOBALS['BACK_PATH'].$file;
+        if (self::isBackendRequest() && !Environment::isCli()) {
+            // paths relative to the backend entry point of older TYPO3 versions ("../typo3conf/...")
+            $relativeToBackend = GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/typo3/' . $file);
+            if (is_file($relativeToBackend)) {
+                return $relativeToBackend;
             }
         }
+        $absoluteFile = GeneralUtility::getFileAbsFileName($file);
+        return $absoluteFile !== '' ? $absoluteFile : $file;
+    }
 
+    /**
+     * Path for the page renderer: relative to the public folder in the frontend, a web path in the backend.
+     */
+    protected static function fixPathForOutput(string $file): string
+    {
+        if (self::isFrontendRequest()) {
+            return str_replace(Environment::getPublicPath() . '/', '', $file);
+        }
+        if (self::isBackendRequest()) {
+            return PathUtility::getAbsoluteWebPath($file);
+        }
         return $file;
     }
 
     /**
-     * Gets the overrides (replacements) for the less file as array().
+     * Overrides (variables) for the compiler: plugin.tx_dyncss.overrides in the frontend (content objects),
+     * the overrides of the registry in the backend.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public static function getOverrides()
+    public static function getOverrides(): array
     {
-        $overrides = [];
-        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
-            if ((array_key_exists('plugin.', $GLOBALS['TSFE']->tmpl->setup))
-            && (array_key_exists('tx_dyncss.', $GLOBALS['TSFE']->tmpl->setup['plugin.']))
-            && (array_key_exists('overrides.', $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']))) {
-                // iterate of cObjects and render them to pass them into the vars
-                foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']['overrides.'] as $varName => $varCObj) {
-                    if (substr($varName, -1, 1) !== '.') {
-                        $cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
-                        $overrides[$varName] = $cObj->cObjGetSingle($varCObj, $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_dyncss.']['overrides.'][$varName.'.']);
-                    }
+        $request = self::getRequest();
+        if (self::isFrontendRequest()) {
+            $overridesConfiguration = self::getFrontendSetup($request)['plugin.']['tx_dyncss.']['overrides.'] ?? [];
+            if (!is_array($overridesConfiguration) || $overridesConfiguration === []) {
+                return [];
+            }
+            $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $contentObjectRenderer->setRequest($request);
+            $overrides = [];
+            foreach ($overridesConfiguration as $varName => $varCObj) {
+                if (!str_ends_with((string)$varName, '.')) {
+                    $overrides[$varName] = $contentObjectRenderer->cObjGetSingle(
+                        (string)$varCObj,
+                        $overridesConfiguration[$varName . '.'] ?? []
+                    );
                 }
             }
-            //
-        } elseif (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
-            /** @var \KayStrobach\Dyncss\Configuration\BeRegistry $configManager */
-            $configManager = GeneralUtility::makeInstance('KayStrobach\Dyncss\Configuration\BeRegistry');
-            $overrides = $configManager->getAllOverrides();
+            return $overrides;
         }
+        if (self::isBackendRequest()) {
+            return BeRegistry::get()->getAllOverrides();
+        }
+        return [];
+    }
 
-        return $overrides;
+    /**
+     * TypoScript setup of the frontend request. Not available for cached pages since TYPO3 v13
+     * (only the parts needed for USER_INT are computed), there are no overrides then.
+     */
+    protected static function getFrontendSetup(?ServerRequestInterface $request): array
+    {
+        $frontendTypoScript = $request?->getAttribute('frontend.typoscript');
+        if ($frontendTypoScript === null) {
+            return [];
+        }
+        try {
+            return $frontendTypoScript->getSetupArray();
+        } catch (\RuntimeException) {
+            return [];
+        }
+    }
+
+    protected static function getRequest(): ?ServerRequestInterface
+    {
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        return $request instanceof ServerRequestInterface ? $request : null;
+    }
+
+    protected static function isFrontendRequest(): bool
+    {
+        $request = self::getRequest();
+        return $request !== null && $request->getAttribute('applicationType') !== null
+            && ApplicationType::fromRequest($request)->isFrontend();
+    }
+
+    protected static function isBackendRequest(): bool
+    {
+        $request = self::getRequest();
+        return $request !== null && $request->getAttribute('applicationType') !== null
+            && ApplicationType::fromRequest($request)->isBackend();
     }
 }

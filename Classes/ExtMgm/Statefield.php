@@ -3,8 +3,7 @@
 namespace KayStrobach\Dyncss\ExtMgm;
 
 use KayStrobach\Dyncss\Parser\AbstractParser;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use KayStrobach\Dyncss\Configuration\BeRegistry;
 
@@ -14,17 +13,12 @@ use KayStrobach\Dyncss\Configuration\BeRegistry;
 class Statefield
 {
     /**
-     * @var FlashMessageService
-     */
-    protected $flashMessageService = null;
-
-    /**
      * Render state field
      *
      * @return string
      * @throws \TYPO3\CMS\Core\Exception
      */
-    public function main()
+    public function main(): string
     {
         /** @var BeRegistry $registry */
         $registry = GeneralUtility::makeInstance(BeRegistry::class);
@@ -50,90 +44,26 @@ class Statefield
             }
             $messageTitle = 'Information';
             $messageBody = 'Congrats, you have ' . count($handlers) . ' handlers registered.';
-            $messageHtml = $this->getFlashMessageHtml($messageBody, $messageTitle, FlashMessage::OK);
+            $messageHtml = $this->getFlashMessageHtml($messageBody, $messageTitle, ContextualFeedbackSeverity::OK);
             $fieldHtml = $messageHtml . '<table class="t3-table table">' . $tableHead . $tableBody . '</table>';
         } else {
             $messageTitle = 'No handler registered! - No dynamic css is handled at all ;/';
             $messageBody = 'Please install one of the dyncss_* extensions';
-            $fieldHtml = $this->getFlashMessageHtml($messageBody, $messageTitle, FlashMessage::WARNING);
+            $fieldHtml = $this->getFlashMessageHtml($messageBody, $messageTitle, ContextualFeedbackSeverity::WARNING);
         }
         return $fieldHtml;
     }
 
-    /**
-     * Add flash message to message queue
-     *
-     * @param FlashMessage $flashMessage
-     * @return void
-     * @throws \TYPO3\CMS\Core\Exception
-     */
-    protected function addFlashMessage(FlashMessage $flashMessage)
+    protected function getFlashMessageHtml(string $messageBody, string $messageTitle, ContextualFeedbackSeverity $severity): string
     {
-        if (!($this->flashMessageService instanceof FlashMessageService)) {
-            $this->flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        }
-        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-        $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
-        $defaultFlashMessageQueue->enqueue($flashMessage);
-    }
-
-    /**
-     * Render queued flash messages
-     *
-     * @return string
-     */
-    protected function renderFlashMessage()
-    {
-        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-        $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
-        return $defaultFlashMessageQueue->renderFlashMessages();
-    }
-
-    /**
-     * @param string $messageBody
-     * @param string $messageTitle
-     * @param int $severity
-     * @return string
-     * @throws \TYPO3\CMS\Core\Exception
-     */
-    protected function getFlashMessageHtml($messageBody = '', $messageTitle = '', $severity = 1)
-    {
-        //
-        // In TYPO3 9.5 the extension configuration is running in install tool.
-        // There is no backend user context available and therefore no flash message queue!
-        //
-        // Severity:
-        $alertType = 'warning';
-        if ($severity === 1) {
-            $alertType = 'danger';
-        } elseif ($severity === 0) {
-            $alertType = 'success';
-        }
-        // Create required HTML
-        $html = '<div class="typo3-messages">' . LF;
-        $html .= '  <div class="alert alert-' . $alertType . '">' . LF;
-        $html .= '    <div class="media">' . LF;
-        $html .= '      <div class="media-left">' . LF;
-        $html .= '        <span class="fa-stack fa-lg">' . LF;
-        $html .= '          <i class="fa fa-circle fa-stack-2x"></i>' . LF;
-        if ($alertType === 'danger') {
-            $html .= '          <i class="fa fa-times fa-stack-1x"></i>' . LF;
-        } elseif ($severity === 'success') {
-            $html .= '          <i class="fa fa-check fa-stack-1x"></i>' . LF;
-        }
-        $html .= '        </span>' . LF;
-        $html .= '      </div>' . LF;
-        $html .= '      <div class="media-body">' . LF;
+        // the extension configuration runs in the install tool: no flash message queue, plain HTML
+        $html = '<div class="alert alert-' . $severity->getCssClass() . '">';
         if ($messageTitle !== '') {
-            $html .= '        <h4 class="alert-title">' . $messageTitle . '</h4>' . LF;
+            $html .= '<h4 class="alert-title">' . htmlspecialchars($messageTitle) . '</h4>';
         }
         if ($messageBody !== '') {
-            $html .= '        <p class="alert-message">' . $messageBody . '</p>' . LF;
+            $html .= '<p class="alert-message">' . htmlspecialchars($messageBody) . '</p>';
         }
-        $html .= '      </div>' . LF;
-        $html .= '    </div>' . LF;
-        $html .= '  </div>' . LF;
-        $html .= '</div>' . LF;
-        return $html;
+        return $html . '</div>';
     }
 }

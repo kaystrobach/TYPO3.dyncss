@@ -26,17 +26,12 @@
 /**
  * @author Kay Strobach
  */
-if (!defined('TYPO3')) {
-    die('Access denied.');
-}
-//if(TYPO3_MODE === 'BE') {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][] = 'KayStrobach\Dyncss\Hooks\T3libPageRendererRenderPreProcessHook->execute';
-//} elseif(TYPO3_MODE === 'FE') {
-//	$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 'KayStrobach\Dyncss\Hooks\TslibFeContentPostProcAllHook->main';
-//}
+defined('TYPO3') || die('Access denied.');
 
+// compiles the dynamic stylesheets added to the page renderer (frontend and backend)
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
+    = \KayStrobach\Dyncss\Hooks\T3libPageRendererRenderPreProcessHook::class . '->execute';
 
-// clear cache item
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'KayStrobach\Dyncss\Hooks\T3libTcemainHook->clearCachePostProc';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'][] = 'KayStrobach\Dyncss\Hooks\Backend\Toolbar\ClearCacheActionsHook';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'KayStrobach\Dyncss\Command\DyncssCommandController';
+// cache command "dyncss" (cache menu of the backend toolbar, see Configuration/Services.yaml)
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][]
+    = \KayStrobach\Dyncss\Hooks\T3libTcemainHook::class . '->clearCachePostProc';
