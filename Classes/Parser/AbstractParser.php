@@ -44,7 +44,15 @@ abstract class AbstractParser implements ParserInterface
     /**
      * @var string
      */
-    protected $cachePath = 'typo3temp/DynCss/';
+    public const CACHE_PATH = 'typo3temp/assets/DynCss/';
+
+    /**
+     * Below typo3temp/assets/: TYPO3 v14 only allows typo3temp/assets/, _assets/ and uploads/ as public resources by
+     * default, it refuses to add typo3temp/DynCss/ to the page ("Project path ... is not allowed").
+     *
+     * @var string
+     */
+    protected $cachePath = self::CACHE_PATH;
 
     /**
      * @var string
@@ -225,7 +233,7 @@ abstract class AbstractParser implements ParserInterface
         }
         if (substr($url, 0, 1) === '/') {
             if (substr($url, 0, strlen(Environment::getPublicPath() . '/')) === Environment::getPublicPath() . '/') {
-                return '../../'.substr($url, strlen(Environment::getPublicPath() . '/'));
+                return $this->pathToPublicRoot() . substr($url, strlen(Environment::getPublicPath() . '/'));
             }
 
             return $url;
@@ -235,7 +243,15 @@ abstract class AbstractParser implements ParserInterface
             return $url;
         }
         // anything inside TYPO3 has to be adjusted
-        return '../../../../'.dirname($this->removePrefixFromString(Environment::getPublicPath() . '/', $this->inputFilename)).'/'.$url;
+        return $this->pathToPublicRoot() . dirname($this->removePrefixFromString(Environment::getPublicPath() . '/', $this->inputFilename)).'/'.$url;
+    }
+
+    /**
+     * "../../../" from the folder of the compiled files (typo3temp/assets/DynCss/) to the public folder
+     */
+    protected function pathToPublicRoot(): string
+    {
+        return str_repeat('../', substr_count(trim($this->cachePath, '/'), '/') + 1);
     }
 
     /**
@@ -349,7 +365,7 @@ abstract class AbstractParser implements ParserInterface
      */
     public function prepareEnvironment($fname)
     {
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/DynCss/');
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/' . $this->cachePath);
         if (!is_dir(Environment::getPublicPath() . '/' . $this->cachePath)) {
             throw new \Exception('Can´t create cache directory PATH_site/'.$this->cachePath, 4838349330);
         }

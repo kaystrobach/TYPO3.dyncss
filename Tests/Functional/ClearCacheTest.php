@@ -50,14 +50,19 @@ class ClearCacheTest extends AbstractDyncssTestCase
 
     public function testCacheCommandRemovesTheCompiledFiles(): void
     {
-        $directory = Environment::getPublicPath() . '/typo3temp/DynCss';
-        GeneralUtility::mkdir_deep($directory);
-        file_put_contents($directory . '/style.css', 'body {}');
+        // the current folder and the one of older versions
+        $directories = [Environment::getPublicPath() . '/typo3temp/assets/DynCss', Environment::getPublicPath() . '/typo3temp/DynCss'];
+        foreach ($directories as $directory) {
+            GeneralUtility::mkdir_deep($directory);
+            file_put_contents($directory . '/style.css', 'body {}');
+        }
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], [], $this->setUpBackendUser(1));
         $dataHandler->clear_cacheCmd('dyncss');
 
-        self::assertDirectoryDoesNotExist($directory);
+        foreach ($directories as $directory) {
+            self::assertDirectoryDoesNotExist($directory);
+        }
     }
 }

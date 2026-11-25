@@ -6,7 +6,8 @@ DynCss compiles dynamic stylesheets (less, scss, …) that are added to the page
 * [dyncss_less](https://github.com/kaystrobach/TYPO3.dyncss_less) - `*.less`
 * [dyncss_scss](https://github.com/kaystrobach/TYPO3.dyncss_scss) - `*.scss`
 
-The compiled files are written to `typo3temp/DynCss/`.
+The compiled files are written to `typo3temp/assets/DynCss/` (older versions: `typo3temp/DynCss/`, which TYPO3 v14 no
+longer allows as public resource). URLs in the stylesheets are rewritten relative to this folder.
 
 Requirements
 ============

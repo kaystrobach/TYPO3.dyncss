@@ -20,7 +20,7 @@ class DyncssServiceTest extends AbstractDyncssTestCase
     private function assertCompiled(string $compiledFile): void
     {
         $absoluteFile = str_starts_with($compiledFile, '/') ? $compiledFile : Environment::getPublicPath() . '/' . $compiledFile;
-        self::assertStringContainsString('typo3temp/DynCss/style.upper-', $compiledFile);
+        self::assertStringContainsString('typo3temp/assets/DynCss/style.upper-', $compiledFile);
         self::assertStringEndsWith('.css', $compiledFile);
         self::assertSame("BODY { COLOR: RED; }\n", file_get_contents($absoluteFile));
     }
@@ -58,7 +58,7 @@ class DyncssServiceTest extends AbstractDyncssTestCase
             }
         });
         $compiledFile = DyncssService::getCompiledFile(self::FIXTURE);
-        self::assertStringStartsWith('typo3temp/DynCss/', $compiledFile);
+        self::assertStringStartsWith('typo3temp/assets/DynCss/', $compiledFile);
         $this->assertCompiled($compiledFile);
     }
 

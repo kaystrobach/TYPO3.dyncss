@@ -30,7 +30,7 @@ abstract class AbstractDyncssTestCase extends FunctionalTestCase
     protected function tearDown(): void
     {
         unset($GLOBALS['TYPO3_REQUEST'], $GLOBALS['BE_USER']);
-        GeneralUtility::rmdir(Environment::getPublicPath() . '/typo3temp/DynCss', true);
+        GeneralUtility::rmdir(Environment::getPublicPath() . '/typo3temp/assets/DynCss', true);
         parent::tearDown();
     }
 
